@@ -6,7 +6,7 @@ La mia proposta si basa sull’idea di un concessionario reale che vuole espande
 Il cliente chiede, oltre a mostrare e vendere dei veicoli nel sito, la possibilità di acquistare accessori
 per tutti i tipi di mezzi.
 La novità principale del sito è l’opzione di farsi recapitare il veicolo comprato online in una
-specifica locazione dando un “appuntamento” con data, ora e luogo con un leggero sovraprezzo.
+specifica locazione dando un “appuntamento” con data, ora e luogo con un leggero sovraprezzo.<br>
 Il sito permette l’accesso a vari tipi di utenti (indicati con la tipologia e poi rientrando ciò che può
 fare):
 • Utente anonimo
