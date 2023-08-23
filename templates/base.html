@@ -14,6 +14,32 @@
                 margin-bottom: 0.5em;
             }
 
+            .left-navigator{
+                position: absolute;
+                bottom: 0;
+                width: 25%;
+                height: 5%;
+                left: 15%;
+                background: transparent;
+                color: white;
+                border: 0px;
+                font-size: 24;
+                font-family: Viner Hand ITC;
+            }
+
+            .right-navigator{
+                position: absolute;
+                bottom: 0;
+                width: 25%;
+                height: 5%;
+                left: 65%;
+                background: transparent;
+                color: white;
+                border: 0px;
+                font-size: 24;
+                font-family: Viner Hand ITC;
+            }
+
             .maincontent{
                 display: flex;
                 flex-direction: row;
@@ -211,6 +237,13 @@
                 flex: 6;
             }
 
+            .titolo1 {
+                display: flex;
+                flex-direction: column;
+                flex: 6;
+                background-image: url("{%static "/imgs/a.png"%}");
+            }
+
             .content {
                 background-image: url("{%static "/imgs/topres.png"%}");
                 height: auto;
@@ -244,11 +277,11 @@
             .jumper{
                 position: absolute;
                 z-index: 2;
-                top: 75%;
+                top: 80%;
                 left: 0%;
                 align: center;
                 width: 100%;
-                height: 25%;
+                height: 20%;
                 background: orange;
                 border: 3px solid black;
                 border-radius: 3px;
@@ -287,18 +320,24 @@
     <body>
        <div align="center">
             <div class="presentation">
-                <a href="#ricerca">
-                    <button style ="position: absolute; bottom: 0; width: 16%; height: 5%; left: 42%;">
-                        Prosegui per la ricerca!
+                <a href="#Mezzi">
+                    <button class="left-navigator" >
+                        Trova il mezzo dei tuoi sogni!
+                    </button>    
+                </a>
+
+                <a href="#accessori">
+                    <button class="right-navigator">
+                        Trova accessori per il tuo veicolo!
                     </button>    
                 </a>
             </div>
            
-            <div id="ricerca" class="maincontent">
+            <div id="Mezzi" class="maincontent" style="margin-top: 15px">
                 <div class="ricerca-leftbar">
                     <div class="selecter">
                         <h2>
-                            Scegli i tuoi filtri di ricerca!
+                            Usa i tuoi filtri di ricerca!
                         </h2>
                         <select>
                             <option selected>
@@ -343,7 +382,6 @@
                                 <label for="prezzomax" align="left"> Prezzo massimo:</label>
                                 <input id="prezzomax" type="number"/>
                         </div>
-
                     </div>
 
                     <div class="logger">
@@ -366,7 +404,6 @@
                             <input type="submit" value="Login">
                         </form>
                     </div>
-
                 </div>
                 
                 <div class="titolo">
@@ -375,42 +412,107 @@
                             Top results
                         </h1>
                     </header>
-                <main class="content">
-                <article>
-                    <div style="padding: 10px; width: 100%; height: 100%; display: flex; flex-wrap: wrap">
-                        {% for i in lista %}
-                        <a class="container">
-                            <button class="jumper">SCOPRI DI PIU'!</button>
-                            <div class="carsnippet">
-                                <img src="{%static "/imgs/500X.jpeg"%}" width="280" height="200" align= "left">
-                                <div id="descrizione" align= "right" style="text-align: left;">
-                                    <p style="font-size:32px; color:red; font-weight: bolder;margin-top: 0px; margin-bottom: 15px">
-                                    FIAT 500X
-                                    </p>
-                                    <p style="font-size:22px; color: green; font-weight: bolder; margin-top: 0px; margin-bottom: 15px">
-                                        11.000<br>
-                                    </p>
-                                    <p style="font-size:16px;">
-                                        Usato 
-                                        <span class="br"></span>
-                                        190.000Km
-                                        <span class="br"></span>
-                                        09/2015
-                                        <span class="br"></span>
-                                        Diesel 1200
-                                    </p>
-                                </div>    
+                    <main class="content">
+                        <article>
+                            <div style="padding: 10px; width: 100%; height: 100%; display: flex; flex-wrap: wrap">
+                                {% for i in lista %}
+                                <a class="container">
+                                    <button class="jumper">SCOPRI DI PIU'!</button>
+                                    <div class="carsnippet">
+                                        <img src="{%static "/imgs/500X.jpeg"%}" width="280" height="200" align= "left"/>
+                                        <div id="descrizione" align= "right" style="text-align: left;">
+                                            <p style="font-size:32px; color:red; font-weight: bolder;margin-top: 0px; margin-bottom: 15px">
+                                                FIAT 500X
+                                            </p>
+                                            <p style="font-size:22px; color: green; font-weight: bolder; margin-top: 0px; margin-bottom: 15px">
+                                                11.000<br>
+                                            </p>
+                                            <p style="font-size:16px;">
+                                                Usato 
+                                                <span class="br"></span>
+                                                190.000Km
+                                                <span class="br"></span>
+                                                09/2015
+                                                <span class="br"></span>
+                                                Diesel 1200
+                                            </p>
+                                        </div>    
+                                    </div>
+                                </a>
+                                {% endfor %}
                             </div>
-                        </a>
-                        {% endfor %}
+                        </article>
+                    </main>
+                </div>
+            </div>
+
+
+
+
+
+
+            <div id="accessori" class="maincontent" style="margin-top: 15px;">
+                <div class="ricerca-leftbar">
+                    <div class="selecter">
+                        <h2>
+                            Usa i tuoi filtri di ricerca!
+                        </h2>
+                        <select>
+                            <option selected>
+                                Automobili
+                            </option>
+                            <option>
+                                Motocicli
+                            </option>
+                        </select>
+                        
+                        <div class="prezzi">
+                            <h3 align="left">
+                                Prezzo:
+                            </h3>
+                                <label for="prezzomin" align="left"> Prezzo minimo:</label>
+                                <input id="prezzomin" type="number"/>
+                                <span class="br"></span>
+                                <label for="prezzomax" align="left"> Prezzo massimo:</label>
+                                <input id="prezzomax" type="number"/>
+                        </div>
                     </div>
-                </article>
-                  </main>
+
+                </div>
+                
+                <div class="titolo1">
+                    <header style="background-image: url("{%static "/imgs/a.png"%}");">
+                        <h1>
+                            I più richiesti!
+                        </h1>
+                    </header>
+                    <main style="background-image: url("{%static "/imgs/a.png"%}");" class="content">
+                        <article>
+                            <div style="padding: 10px; width: 100%; height: 100%; display: flex; flex-wrap: wrap">
+                                {% for i in num_acc %}
+                                <a class="container">
+                                    <button class="jumper">SCOPRI DI PIU'!</button>
+                                    <div class="carsnippet">
+                                        <img src="{%static "/imgs/strisce_led3.jpeg"%}" width="280" height="200" align= "left">
+                                        <div id="descrizione" align= "right" style="text-align: left;">
+                                            <p style="font-size:26px; color:red; font-weight: bolder;margin-top: 0px; margin-bottom: 15px">
+                                                Strisce led per casco
+                                            </p>
+                                            <p style="font-size:20px; color: green; font-weight: bolder; margin-top: 0px; margin-bottom: 15px">
+                                                11,00<br>
+                                            </p>
+                                        </div>    
+                                    </div>
+                                </a>
+                                {% endfor %}
+                            </div>
+                        </article>
+                    </main>
                 </div>
             </div>
             
         </div>
-        <img width: 100%; height: 100%; src="{%static "/imgs/ultimaschermata.png"%}" >
+        <img width: 100%; height: 100%; src="{%static "/imgs/ultimaschermata.png"%}" style="margin-top: 15px">
         <nav style="background-color: black; display: flex; flex-direction: row; width: 100%">
             <a class="link" href="#ricerca">Chi siamo</a>
             <a class="link" href="#ricerca">Contatti</a>
