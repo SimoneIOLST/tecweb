@@ -1,0 +1,21 @@
+{% extends 'gestione/common.html' %}
+{% block title%} 
+    Inserimento mezzo {{ object.id }}
+{% endblock %}
+
+{%block head%}
+    {%load humanize%}
+    {%load static%}
+{% endblock %}
+
+{% block content %}
+    <h1 style="font-size:36" align="center">
+        INSERIMENTO DELLE IMMAGINI DELLA MACCHINA
+    </h1>
+    <form method="post" enctype="multipart/form-data">
+        {% csrf_token %}
+        {{ form.as_p}}
+        <button type="submit">Create</button>
+    </form>
+    <a style="font-size:24; color: black" href="{% url 'gestione:mezzo-list' %}" style="margin-top: 25px;">Torna alla lista dei mezzi</a>
+{% endblock %}
