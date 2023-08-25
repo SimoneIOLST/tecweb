@@ -45,13 +45,13 @@ class CreateMezzoView(CreateView):
         return redirect(reverse_lazy('gestione:immmac-crea', kwargs={'car_id': self.object.pk}))
 
     def get_success_url(self):
-        return reverse('gestione:mezzo-list')  # Redirect back to MezzoListView
+        return reverse('gestione:mezzo-list')  
 
 
 class CreateImmaginiMacchinaView(CreateView):
     model = ImmaginiMacchina
-    fields = "__all__" # Replace with the actual fields
-    template_name = 'gestione/creaImmMacc.html'  # Replace with your template name
+    fields = "__all__" 
+    template_name = 'gestione/creaImmMacc.html' 
     
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
@@ -64,4 +64,4 @@ class CreateImmaginiMacchinaView(CreateView):
         return super().form_valid(form)
         
     def get_success_url(self):
-        return reverse('gestione:mezzo-list')  # Redirect back to MezzoCreateView
+        return reverse('gestione:mezzo-list')
