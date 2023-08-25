@@ -49,6 +49,18 @@
             {%endif%}
         {% endfor %}
     
+
+    <div>
+        <h2>Contatta il venditore:</h2>
+        <p>Nome: {{ venditore.nome }}</p>
+        <p>Telefono: {{ venditore.telefono }}</p>
+        <p>mail: <a href="mailto:{{venditore.mail}} ">{{ venditore.mail }}</a></p>
+        <p>PEC: {{ venditore.pec }}</p>
+        <p>Indirizzo: {{ venditore.indirizzo }} </p>
+        <p>Città: {{ venditore.citta }}</p>
+        <p>Provincia: {{ venditore.provincia }}</p>
+        <p>CF: {{ venditore.cf }}</p>
+    </div>
     <br/> <br/>
     <a style="font-size:24; color: black" href="{% url 'gestione:mezzo-list' %}" style="margin-top: 25px;">Torna alla lista dei mezzi</a>
 </div>

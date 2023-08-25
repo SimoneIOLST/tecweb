@@ -1,5 +1,5 @@
 from django.shortcuts import render
-from .models import Mezzo, ImmaginiMacchina, Accessorio, ImmaginiAccessorio
+from .models import Mezzo, ImmaginiMacchina, Accessorio, ImmaginiAccessorio, Venditore
 from django.views.generic import DetailView, ListView
 
 
@@ -15,6 +15,7 @@ class MezzoDetailView(DetailView):
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
         context['immagini_mezzo'] = ImmaginiMacchina.objects.filter(car_id=self.object.id)
+        context['venditore'] = self.object.venditore
         return context
     
 class AccListView(ListView):
@@ -29,4 +30,5 @@ class AccDetailView(DetailView):
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
         context['immagini_acc'] = ImmaginiAccessorio.objects.filter(acc_id_id=self.object.id)
+        context['venditore'] = self.object.venditore
         return context

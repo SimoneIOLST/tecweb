@@ -42,27 +42,40 @@
 
     <h2>Immagini del Mezzo:</h2>
     
-        {% for immagine in immagini_acc %}
+    {% for immagine in immagini_acc %}
 
-            <div align="center">
-                <img src="{{ immagine.foto1.url }}" alt="Immagine Mezzo"  /> 
-            </div>
+        <div align="center">
+            <img src="{{ immagine.foto1.url }}" alt="Immagine Mezzo"  /> 
+        </div>
 
-            {%if immagine.foto2.url != ''%}
-            <div align="center">
-                <img src="{{ immagine.foto2.url }}" alt="Immagine Mezzo"  /> 
-            </div>
-            {%endif%}
+        {%if immagine.foto2.url != ''%}
+        <div align="center">
+            <img src="{{ immagine.foto2.url }}" alt="Immagine Mezzo"  /> 
+        </div>
+        {%endif%}
 
-            {%if immagine.foto3.url != ''%}
-            <div align="center">
-                <img src="{{ immagine.foto3.url }}" alt="Immagine Mezzo"  /> 
-            </div>
-            {%endif%}
+        {%if immagine.foto3.url != ''%}
+        <div align="center">
+            <img src="{{ immagine.foto3.url }}" alt="Immagine Mezzo"  /> 
+        </div>
+        {%endif%}
 
-        {% endfor %}
+    {% endfor %}
     
-    <br/> <br/>
-    <a style="font-size:24; color: black" href="{% url 'gestione:acc-list' %}" style="margin-top: 25px;">Torna alla lista dei mezzi</a>
+    <div>
+        <h2>Contatta il venditore:</h2>
+        <p>Nome: {{ venditore.nome }}</p>
+        <p>Telefono: {{ venditore.telefono }}</p>
+        <p>mail: <a href="mailto:{{venditore.mail}} ">{{ venditore.mail }}</a></p>
+        <p>PEC: {{ venditore.pec }}</p>
+        <p>Indirizzo: {{ venditore.indirizzo }} </p>
+        <p>Città: {{ venditore.citta }}</p>
+        <p>Provincia: {{ venditore.provincia }}</p>
+        <p>CF: {{ venditore.cf }}</p>
+    </div>
+
+    <div align="left">
+        <a style="font-size:24; color: black" href="{% url 'gestione:acc-list' %}" style="margin-top: 25px;">Torna alla lista dei mezzi</a>
+    </div>
 </div>
 {% endblock %}

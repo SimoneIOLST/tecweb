@@ -7,11 +7,14 @@ from django.db.models import Model
 
 class Venditore(Model):
     cf = models.CharField(max_length=16, primary_key=True)
+    nome = models.CharField(max_length=50)
     iban = models.CharField(max_length=34)
     telefono = models.CharField(max_length=16)
     pec = models.CharField(max_length=40, null=True)
     mail = models.CharField(max_length=319)
     indirizzo = models.CharField(max_length=50)
+    citta = models.CharField(max_length=50)
+    provincia = models.CharField(max_length=50)
 
     class Meta:
         verbose_name_plural = "Venditori"
