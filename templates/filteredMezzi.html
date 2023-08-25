@@ -1,0 +1,34 @@
+<html>
+    <head>
+        {% load humanize %}
+    </head>
+    <body>
+        {% for i, c in queryset %}
+        <a class="container" href="{% url 'gestione:mezzo-detail' c.id %}">
+            <button class="jumper">SCOPRI DI PIU'!</button>
+            <div class="carsnippet">
+                <img src="{{ i.fronte.url }}" width="280" height="200" align="left"/>
+                <div id="descrizione" align="right" style="text-align: left;">
+                    <p style="font-size:32px; color:red; font-weight: bolder;margin-top: 0px; margin-bottom: 15px">
+                        {{ c.marca }} {{ c.modello }}
+                    </p>
+                    <p style="font-size:22px; color: green; font-weight: bolder; margin-top: 0px; margin-bottom: 15px">
+                        {{ c.prezzo|intcomma }}€<br>
+                    </p>
+                    <p style="font-size:16px;">
+                        {% if c.num_proprietari > 0 %}
+                            <p>Usato</p>
+                        {% else %}
+                            <p style="font-weight: bold;">Nuovo</p>
+                        {% endif %}
+                        <span class="br"></span>
+                        {{ c.kilometraggio }} Km
+                        <span class="br"></span>
+                        {{ c.data_fabbricazione|date:"m/Y"  }}
+                    </p>
+                </div>
+            </div>
+        </a>
+        {% endfor %}
+    </body>
+</html>

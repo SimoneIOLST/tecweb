@@ -1,0 +1,55 @@
+{% extends 'gestione/common.html' %}
+{% block title%} 
+    Dettaglio mezzo {{ object.id }}
+{% endblock %}
+
+{%block head%}
+    {%load humanize%}
+    {%load static%}
+    <style>
+        body{
+            background-image: url("{%static "/imgs/a.png"%}");
+        }
+        .content{
+            width: 100%;
+            height: 100%;
+        }
+
+        .content div{
+            background-image: url("{%static "/imgs/a.png"%}");
+            margin-top:25px;
+        }
+    </style>
+{% endblock %}
+
+{% block content %}
+<div class="content">
+    <h1 style="color: white; font-size:36" align="center">
+        DETTAGLI DELLA {{ object.marca }} {{ object.modello }}
+    </h1>
+    <p style="font-size: 28; font-weight: bold; color: blue"><u>Prezzo: {{ object.prezzo|intcomma }} €</u></p>
+    <p  style="font-size: 22;">Kilometraggio: {{ object.kilometraggio }} Km</p>
+    <p style="font-size: 22;">Colore: {{object.colore}}</p>
+
+    <h2>Immagini del Mezzo:</h2>
+    
+        {% for immagine in immagini_mezzo %}
+            <div align="center">
+                <img src="{{ immagine.fronte.url }}" alt="Immagine Mezzo"  /> 
+            </div>
+            {%if immagine.retro.url != ''%}
+            <div align="center">
+                <img src="{{ immagine.retro.url }}" alt="Immagine Mezzo"  /> 
+            </div>
+            {%endif%}
+            {%if immagine.interni.url != ''%}
+            <div align="center">
+                <img src="{{ immagine.interni.url }}" alt="Immagine Mezzo"  /> 
+            </div>
+            {%endif%}
+        {% endfor %}
+    
+    <br/> <br/>
+    <a style="font-size:24; color: black" href="{% url 'gestione:mezzo-list' %}" style="margin-top: 25px;">Torna alla lista dei mezzi</a>
+</div>
+{% endblock %}

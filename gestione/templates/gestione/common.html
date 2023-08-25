@@ -1,0 +1,15 @@
+<html>
+    <head>
+        {%load static%}
+        {%load humanize%}
+        
+        <title> 
+            {% block  title %} {% endblock%} 
+        </title>
+        {%block head%}{% endblock %}
+    </head>
+    <body>
+        {%block content%}
+        {% endblock %}
+    </body>
+</html>

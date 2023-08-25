@@ -1,0 +1,280 @@
+<html>
+    <head>
+        {% load static %}
+        {% load humanize %}
+       
+        <title>
+            Dag Dal Gas!
+        </title>
+        <style>
+            @import url({% static 'css/styles.css' %});
+            .*{
+                box-sizing: border-box;
+            }
+
+            .presentation{
+                background-image: url("{%static "/imgs/primaschermata.png"%}");
+                width: 100%;
+                height: 100%;
+                position: relative;
+                background-size: cover;
+            }
+
+            header{
+                background-image: url("{%static "/imgs/topres.png"%}");
+                flex: 1;
+                max-height: 10vh;
+                color: white;
+            }
+
+            .titolo1 {
+                display: flex;
+                flex-direction: column;
+                flex: 6;
+                background-image: url("{%static "/imgs/a.png"%}");
+            }
+            
+            .content {
+                background-image: url("{%static "/imgs/topres.png"%}");
+                height: auto;
+                overflow-y:auto;
+            }
+            
+
+            .logger form{
+                position: absolute;
+                inset: 4px;
+                padding: 20px 15px;
+                min-height:  34vh;
+                background-image:  url("{%static "/imgs/topres.png"%}");;
+                z-index: 2;
+            }
+
+            .fine{
+                background-image: url("{%static "/imgs/ultimaschermata.png"%}");
+                width: 100%;
+                height:99%;
+                background-size:cover;
+                position: relative;
+            }
+
+            
+        </style>
+    </head>
+    <body>
+        <div class="presentation">
+            <a href="#Mezzi">
+                <button class="left-navigator">
+                    Trova il mezzo dei tuoi sogni!
+                </button>    
+            </a>
+
+            <a href="#accessori">
+                <button class="right-navigator">
+                    Trova accessori per il tuo veicolo!
+                </button>    
+            </a>
+        </div>
+       <div align="center">
+            <div id="Mezzi" class="maincontent" style="margin-top: 15px">
+                <div class="ricerca-leftbar">
+                    <div class="selecter">
+                        <h2>
+                            Usa i tuoi filtri di ricerca!
+                        </h2>
+                        
+                        <select id="tipo_mezzo">
+                            <option value="tutti" selected>
+                                Tutti
+                            </option>
+                            <option value="auto">
+                                Automobili
+                            </option>
+                            <option value="moto">
+                                Motocicli
+                            </option>
+                        </select>
+                       
+                        <select id="new_used">
+                            <option value="tutti" selected>
+                                Tutti
+                            </option>
+                            <option value="u">
+                                Usato
+                            </option>
+                            <option value="n">
+                                Nuovo
+                            </option>
+                        </select>
+
+                        <h3 align="left">
+                            Marche:
+                        </h3>
+                        <div class="marche">
+                            {%for i in marche%}
+                                <div>
+                                    <input type="checkbox" id="{{ i }}" name="marca1" value="{{ i }}" checked>
+                                    <label for="{{ i }}"> {{ i }}</label><br>
+                                </div>
+                            {% endfor %}
+                        </div>
+
+                        <div class="prezzi">
+                            <h3 align="left">
+                                Prezzo:
+                            </h3>
+                                <label for="mezzo-prezzomin" align="left"> Prezzo minimo:</label>
+                                <input id="mezzo-prezzomin" type="number"/>
+                                <span class="br"></span>
+                                <label for="mezzo-prezzomax" align="left"> Prezzo massimo:</label>
+                                <input id="mezzo-prezzomax" type="number"/>
+                        </div>
+                    </div>
+                    <div class="logger">
+                        <form>
+                            <h3>
+                                Fai il login per avere molte più funzionalità
+                            </h3>
+                            <div class="inputlog">
+                                <input type="text" required="required">
+                                <span>Username</span>
+                                <i></i>
+                            </div>
+                            <div class="inputlog">
+                                <input type="password" required="required">
+                                <span>Password</span>
+                                <i></i>
+                            </div>
+                            <a href="">Registrati!</a>
+                            <span class="br"></span>
+                            <input type="submit" value="Login">
+                        </form>
+                    </div>
+                </div>
+                
+                <div class="titolo">
+                    <header>
+                        <h1>
+                            Top results
+                        </h1>
+                    </header>
+                    <main class="content">
+                        <article>
+                            <div id="mezzi-no-res" style="color: white; display:none">
+                                <h1>
+                                    Non ci sono risultati per questi filtri!
+                                </h1>
+                            </div>
+                            <div id="risultati_filtri" style="padding: 10px; height: 100%; display: flex; flex-wrap: wrap">
+                                {% for i, c in zipped_mezzi %}
+                                <a class="container" href="{% url 'gestione:mezzo-detail' c.id %}">
+                                    <button class="jumper">SCOPRI DI PIU'!</button>
+                                    <div class="carsnippet">
+                                        <img src="{{ i.fronte.url }}" width="280" height="200" align= "left"/>
+                                        <div id="descrizione" align= "right" style="text-align: left;">
+                                            <p style="font-size:32px; color:red; font-weight: bolder;margin-top: 0px; margin-bottom: 15px; text-decoration: none;">
+                                                {{ c.marca }} {{ c.modello }}
+                                            </p>
+                                            <p style="font-size:22px; color: green; font-weight: bolder; margin-top: 0px; margin-bottom: 15px">
+                                                {{ c.prezzo|intcomma }}€<br>
+                                            </p>
+                                            <p style="font-size:16px;">
+                                                {% if c.num_proprietari > 0 %}
+                                                    <p>Usato</p>
+                                                {% else %}
+                                                    <p style="font-weight: bold;">Nuovo</p>
+                                                {% endif %}
+                                                <span class="br"></span>
+                                                    {{ c.kilometraggio }} Km
+                                                <span class="br"></span>
+                                                    {{ c.data_fabbricazione|date:"m/Y"  }}
+                                                
+                                            </p>
+                                        </div>    
+                                    </div>
+                                </a>
+                                {% endfor %}
+                            </div>
+                        </article>
+                    </main>
+                </div>
+            </div>
+
+
+
+
+            <div id="accessori" class="maincontent" style="margin-top: 15px;">
+                <div class="ricerca-leftbar">
+                    <div class="selecter">
+                        <h2>
+                            Usa i tuoi filtri di ricerca!
+                        </h2>
+                        <select id="tipo_acc">
+                            <option value="tutto" selected>
+                                Tutti
+                            </option>
+                            <option value="auto">
+                                Automobili
+                            </option>
+                            <option value="moto">
+                                Motocicli
+                            </option>
+                        </select>
+                        
+                        <div class="prezzi">
+                            <h3 align="left">
+                                Prezzo:
+                            </h3>
+                                <label for="acc-prezzomin" align="left"> Prezzo minimo:</label>
+                                <input id="acc-prezzomin" type="number"/>
+                                <span class="br"></span>
+                                <label for="acc-prezzomax" align="left"> Prezzo massimo:</label>
+                                <input id="acc-prezzomax" type="number"/>
+                        </div>
+                    </div>
+
+                </div>
+                
+                <div class="titolo1">
+                    <header style="background-image: url("{%static "/imgs/a.png"%}");">
+                        <h1>
+                            I più richiesti!
+                        </h1>
+                    </header>
+                    <main style="background-image: url("{%static "/imgs/a.png"%}");" class="content">
+                        <article>
+                            <div id="risultati_filtri_acc" style="padding: 10px; width: 100%; height: 100%; display: flex; flex-wrap: wrap">
+                                {% for i, acc in zipped_acc %}
+                                <a class="container">
+                                    <button class="jumper">SCOPRI DI PIU'!</button>
+                                    <div class="carsnippet">
+                                        <img src="{{ i.foto1.url }}" width="280" height="200" align= "left"/>
+                                        <div id="descrizione" align= "right" style="text-align: left;">
+                                            <p style="font-size:26px; color:red; font-weight: bolder;margin-top: 0px; margin-bottom: 15px;">
+                                                {{ acc.nome }}
+                                            </p>
+                                            <p style="font-size:20px; color: green; font-weight: bolder; margin-top: 0px; margin-bottom: 15px">
+                                                {{ acc.prezzo }} €<br>
+                                            </p>
+                                            <p>{{ acc.descrizione|truncatechars:125 }}</p>
+                                        </div>    
+                                    </div>
+                                </a>
+                                {% endfor %}
+                            </div>
+                        </article>
+                    </main>
+                </div>
+            </div>
+            
+        </div>
+        <div class="fine"></div>
+        <nav style="background-color: black; display: flex; flex-direction: row; width: 100%;">
+            <a class="link" href="#accessori">Chi siamo</a>
+            <a class="link" href="#Mezzi">Contatti</a>
+            <a class="link" href="">Seguici su Instagram!</a>
+            <a class="link" href="">Seguici su Facebook!</a>
+        </nav>
+    </body>
+    <script src="{% static 'javascript/filtro.js' %}"></script>
+</html>

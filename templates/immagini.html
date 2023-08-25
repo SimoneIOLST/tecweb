@@ -1,0 +1,26 @@
+<html>
+    <head>
+        <title>
+            {{ title }}
+        </title>
+    </head>
+    <body>
+        {% for i, p in zipped %}
+            <p>
+                {{ i.car_id }}
+                <br>separa <br>
+                {{ p.id }}
+            </p>
+            
+            <div>
+                <img src="{{ i.fronte.url }}" alt="Non disponibile temporaneamente" />
+            </div>
+            <div>
+                <img src="{{ i.retro.url }}" alt="Lights" />
+            </div>
+            <div>
+                <img src="{{ i.interni.url }}" alt="Lights" />
+            </div>
+        {% endfor %}
+    </body>
+</html>
