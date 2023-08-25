@@ -1,6 +1,6 @@
 {% extends 'gestione/common.html' %}
 {% block title%} 
-    Inserimento immagini mezzo {{ object.id }}
+    Inserimento immagini accessorio {{ object.id }}
 {% endblock %}
 
 {%block head%}
@@ -9,15 +9,15 @@
 
 {% block content %}
     <h1 style="font-size:36" align="center">
-        INSERIMENTO DELLE IMMAGINI DELLA MACCHINA
+        INSERIMENTO DELLE IMMAGINI DELL'ACCESSORIO
     </h1>
-
+    
     <form method="post" enctype="multipart/form-data">
         {% csrf_token %}
-        <input type="hidden" name="car_id" value="{{ car_id }}">
-        {{ form.fronte }}
-        {{ form.interni }}
-        {{ form.retro }}
+        <input type="hidden" name="acc_id" value="{{ acc_id }}">
+        {{ form.foto1 }}
+        {{ form.foto2 }}
+        {{ form.foto3 }}
         <button type="submit">Create</button>
     </form>
     <a style="font-size:24; color: black" href="{% url 'gestione:mezzo-list' %}" style="margin-top: 25px;">Torna alla lista dei mezzi</a>

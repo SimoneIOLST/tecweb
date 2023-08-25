@@ -37,7 +37,6 @@ class AccDetailView(DetailView):
 class CreateMezzoView(CreateView):
     model = Mezzo
     template_name = "gestione/creaMezzo.html"
-    model = Mezzo
     fields = "__all__"
         
     def form_valid(self, form):
@@ -65,3 +64,34 @@ class CreateImmaginiMacchinaView(CreateView):
         
     def get_success_url(self):
         return reverse('gestione:mezzo-list')
+    
+class CreateAccView(CreateView):
+    model = Accessorio
+    template_name = "gestione/creaAccessorio.html"
+    fields = "__all__"
+        
+    def form_valid(self, form):
+        response = super().form_valid(form)
+        return redirect(reverse_lazy('gestione:IA-crea', kwargs={'acc_id': self.object.pk}))
+
+    def get_success_url(self):
+        return reverse('gestione:acc-list')  
+
+
+class CreateImmaginiAccessorioView(CreateView):
+    model = ImmaginiAccessorio
+    fields = "__all__" 
+    template_name = 'gestione/creaImmAcc.html' 
+    
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        context['acc_id'] = self.kwargs['acc_id']
+        return context
+
+
+    def form_valid(self, form):
+        form.instance.acc_id_id = self.kwargs['acc_id']
+        return super().form_valid(form)
+        
+    def get_success_url(self):
+        return reverse('gestione:acc-list')
