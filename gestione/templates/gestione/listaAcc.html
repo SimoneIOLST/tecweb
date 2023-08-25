@@ -1,0 +1,19 @@
+<html>
+    <body>
+        <h1 align="center">
+            Benvenuto nella lista di tutti gli accessori di<br> Dag Dal Gas
+        </h1>
+    {% for p in object_list %}
+        <ul>
+            <a href="{% url 'gestione:acc-detail' p.id %}">
+                {{ p.id }}: {{ p.nome }}
+                {%if p.per_moto %}
+                    (per moto)
+                {%else%}
+                    (per macchine)
+                {% endif %}
+            </a>
+        </ul>
+    {% endfor %}
+    </body>
+</html>

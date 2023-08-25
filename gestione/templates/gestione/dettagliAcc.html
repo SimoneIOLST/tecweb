@@ -1,0 +1,68 @@
+{% extends 'gestione/common.html' %}
+{% block title%} 
+    Dettaglio accessorio {{ object.id }}
+{% endblock %}
+
+{%block head%}
+    {%load humanize%}
+    {%load static%}
+    <style>
+        body{
+            background-image: url("{%static "/imgs/a.png"%}");
+        }
+        .content{
+            width: 100%;
+            height: 100%;
+        }
+
+        .content div{
+            background-image: url("{%static "/imgs/a.png"%}");
+            margin-top:25px;
+        }
+    </style>
+{% endblock %}
+
+{% block content %}
+<div class="content">
+    <h1 style="color: white; font-size:36" align="center">
+        DETTAGLI DI {{ object.nome }}
+    </h1>
+    <p style="font-size: 28; font-weight: bold; color: blue"><u>Prezzo: {{ object.prezzo|intcomma }} €</u></p>
+    {%if object.per_moto %}
+        <p style="font-size: 22;">
+            Costruito per le moto
+        </p>
+    {% else %}
+        <p style="font-size: 22;">
+            Costruito per le mmacchine
+        </p>
+    {% endif %}
+    
+    <p  style="font-size: 22;">Descrizone del prodotto: <br/> {{ object.descrizione }}</p>
+
+    <h2>Immagini del Mezzo:</h2>
+    
+        {% for immagine in immagini_acc %}
+
+            <div align="center">
+                <img src="{{ immagine.foto1.url }}" alt="Immagine Mezzo"  /> 
+            </div>
+
+            {%if immagine.foto2.url != ''%}
+            <div align="center">
+                <img src="{{ immagine.foto2.url }}" alt="Immagine Mezzo"  /> 
+            </div>
+            {%endif%}
+
+            {%if immagine.foto3.url != ''%}
+            <div align="center">
+                <img src="{{ immagine.foto3.url }}" alt="Immagine Mezzo"  /> 
+            </div>
+            {%endif%}
+
+        {% endfor %}
+    
+    <br/> <br/>
+    <a style="font-size:24; color: black" href="{% url 'gestione:acc-list' %}" style="margin-top: 25px;">Torna alla lista dei mezzi</a>
+</div>
+{% endblock %}

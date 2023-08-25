@@ -245,7 +245,7 @@
                         <article>
                             <div id="risultati_filtri_acc" style="padding: 10px; width: 100%; height: 100%; display: flex; flex-wrap: wrap">
                                 {% for i, acc in zipped_acc %}
-                                <a class="container">
+                                <a class="container" href="{% url 'gestione:acc-detail' acc.id %}">
                                     <button class="jumper">SCOPRI DI PIU'!</button>
                                     <div class="carsnippet">
                                         <img src="{{ i.foto1.url }}" width="280" height="200" align= "left"/>

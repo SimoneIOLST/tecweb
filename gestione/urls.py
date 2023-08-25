@@ -23,4 +23,6 @@ app_name = "gestione"
 urlpatterns = [
     path('mezzo/<int:pk>/', MezzoDetailView.as_view(), name='mezzo-detail'),
     path('listamezzi/', MezzoListView.as_view(), name='mezzo-list'),
+    path('accessorio/<int:pk>/', AccDetailView.as_view(), name='acc-detail'),
+    path('listaacc/', AccListView.as_view(), name='acc-list'),
 ]
