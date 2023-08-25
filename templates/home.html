@@ -130,22 +130,23 @@
                                 <input id="mezzo-prezzomax" type="number"/>
                         </div>
                     </div>
-                    <div class="logger">
-                        <form>
+                    <div id="logger" class="logger">
+                        <form method="POST" action="{% url 'login' %}">
+                            {% csrf_token %}
                             <h3>
                                 Fai il login per avere molte più funzionalità
                             </h3>
                             <div class="inputlog">
-                                <input type="text" required="required">
+                                <input type="text" required="required" name="username">
                                 <span>Username</span>
                                 <i></i>
                             </div>
                             <div class="inputlog">
-                                <input type="password" required="required">
+                                <input type="password" required="required" name="password">
                                 <span>Password</span>
                                 <i></i>
                             </div>
-                            <a href="">Registrati!</a>
+                            <a href="{% url 'register' %}">Registrati!</a>
                             <span class="br"></span>
                             <input type="submit" value="Login">
                         </form>
@@ -277,4 +278,13 @@
         </nav>
     </body>
     <script src="{% static 'javascript/filtro.js' %}"></script>
+    <script>
+        const urlParams = new URLSearchParams(window.location.search);
+        const loginFailed = urlParams.get('login_failed');
+        const loginError = document.getElementById('login-error');
+    
+        if (loginFailed) {
+            alert('Invalid login!')
+        }
+    </script>
 </html>

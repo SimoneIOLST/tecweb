@@ -1,8 +1,14 @@
 from django.http import JsonResponse
-from django.shortcuts import render
+from django.shortcuts import render, redirect
 from django.template.loader import render_to_string
 from gestione.models import *
 from django.db.models import Q
+from .forms import NewUserForm
+from django.contrib.auth import login, authenticate
+from django.contrib import messages
+from django.views import View
+from django.urls import reverse
+from django.contrib.auth.decorators import login_required
 
 def home_page(request):
 
@@ -23,6 +29,35 @@ def home_page(request):
     }
 
     return render(request, template_name="home.html", context=ctx)
+
+def register_request(request):
+	if request.method == "POST":
+		form = NewUserForm(request.POST)
+		if form.is_valid():
+			user = form.save()
+			login(request, user)
+			messages.success(request, "Registration successful." )
+			return redirect("/home")
+		messages.error(request, "Unsuccessful registration. Invalid information.")
+	form = NewUserForm()
+	return render (request=request, template_name="register.html", context={"register_form":form})
+
+class CustomLoginView(View):
+    def post(self, request, *args, **kwargs):
+        username = request.POST.get('username')
+        password = request.POST.get('password')
+        
+        user = authenticate(username=username, password=password)
+        if user is not None:
+            login(request, user)
+            return redirect('authHome_page')  
+        else:
+            login_url = reverse('home') + '?login_failed=true'
+            return redirect(login_url)
+
+@login_required      
+def authHome_page(request):
+    return render(request, 'authHome.html')
 
 def get_filtered_mezzi(request):
     filtri = {key: value for key, value in request.GET.items()}

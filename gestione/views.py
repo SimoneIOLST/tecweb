@@ -2,7 +2,7 @@ from .models import Mezzo, ImmaginiMacchina, Accessorio, ImmaginiAccessorio, Ven
 from django.views.generic import DetailView, ListView, CreateView
 from django.urls import reverse_lazy, reverse
 from django.shortcuts import redirect
-
+from .forms import MezzoForm
 
 class MezzoListView(ListView):
     model = Mezzo
@@ -37,11 +37,11 @@ class AccDetailView(DetailView):
 class CreateMezzoView(CreateView):
     model = Mezzo
     template_name = "gestione/creaMezzo.html"
-    fields = "__all__"
+    form_class = MezzoForm
         
     def form_valid(self, form):
         response = super().form_valid(form)
-        return redirect(reverse_lazy('gestione:immmac-crea', kwargs={'car_id': self.object.pk}))
+        return redirect(reverse_lazy('gestione:IM-crea', kwargs={'car_id': self.object.pk}))
 
     def get_success_url(self):
         return reverse('gestione:mezzo-list')  
