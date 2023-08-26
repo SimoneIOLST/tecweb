@@ -57,7 +57,12 @@ class CustomLoginView(View):
         user = authenticate(username=username, password=password)
         if user is not None:
             login(request, user)
-            user_data = {
+            try:
+                venditore = Venditore.objects.get(venditore=user)
+                return redirect('gestione:dashboard')
+                
+            except Venditore.DoesNotExist:
+                user_data = {
                 'nome': user.get_full_name(),
                 'username': user.username,
             }
@@ -85,8 +90,6 @@ def authHome_page(request):
 
     zipped_mezzi = get_mezzi()
     lista_fav = []
-    for a, i in zipped_mezzi:
-        print(i)
 
     zipped_acc = get_accessori()
     marche = Mezzo.objects.values_list('marca', flat=True).distinct()

@@ -12,6 +12,7 @@ class Venditore(Model):
     indirizzo = models.CharField(max_length=50)
     citta = models.CharField(max_length=50)
     provincia = models.CharField(max_length=50)
+    venditore = models.ForeignKey(to=User, on_delete=models.CASCADE, unique=False)
 
     class Meta:
         verbose_name_plural = "Venditori"

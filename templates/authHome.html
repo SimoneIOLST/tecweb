@@ -206,11 +206,7 @@
                             </div>
                             <div id="risultati_filtri" style="padding: 10px; height: 100%; display: flex; flex-wrap: wrap">
                                 {% for i, c in zipped_mezzi %}
-                                {% if is_favorite %}
-                                    <a href="{% url 'remove-favorite-mezzo' mezzo.id %}">Remove from Favorites</a>
-                                {% else %}
-                                    <a href="{% url 'add-favorite-mezzo' mezzo.id %}">Add to Favorites</a>
-                                {% endif %}
+                                
                                 <a class="container" href="{% url 'gestione:mezzo-detail' c.id %}">
                                     <button class="jumper">SCOPRI DI PIU'!</button>
                                     <div class="carsnippet">

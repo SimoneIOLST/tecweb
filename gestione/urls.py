@@ -29,4 +29,5 @@ urlpatterns = [
     path('creaimmmacc/<int:car_id>/', CreateImmaginiMacchinaView.as_view(), name="IM-crea"),
     path('creaaccessorio/', CreateAccView.as_view(), name="acc-crea"),
     path('creaIA/<int:acc_id>/', CreateImmaginiAccessorioView.as_view(), name="IA-crea"),
+    path('venditoredashboard/', dashbord, name="dashboard")
 ]

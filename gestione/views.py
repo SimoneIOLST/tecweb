@@ -1,7 +1,7 @@
 from .models import Mezzo, ImmaginiMacchina, Accessorio, ImmaginiAccessorio, Venditore
 from django.views.generic import DetailView, ListView, CreateView
 from django.urls import reverse_lazy, reverse
-from django.shortcuts import redirect
+from django.shortcuts import render, redirect
 from .forms import MezzoForm
 
 class MezzoListView(ListView):
@@ -95,3 +95,6 @@ class CreateImmaginiAccessorioView(CreateView):
         
     def get_success_url(self):
         return reverse('gestione:acc-list')
+    
+def dashbord(request):
+    return render(request, "gestione/dashboard.html")
