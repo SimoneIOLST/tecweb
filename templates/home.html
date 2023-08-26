@@ -62,6 +62,13 @@
         </style>
     </head>
     <body>
+        <div id="login-success" style="display: none;">
+            {% for message in messages %}
+                {% if message.tags == 'success' %}
+                    {{ message }}
+                {% endif %}
+            {% endfor %}
+        </div>
         <div class="presentation">
             <a href="#Mezzi">
                 <button class="left-navigator">
@@ -281,12 +288,19 @@
     <script src="{% static 'javascript/filtro.js' %}"></script>
     {% if messages %}
         <script>
-            const loginError = document.getElementById('login-error');
-            console.log(loginError);
-            console.log("prova");
-            if (loginError) {
-                alert('Invalid login!');
-            }
+            {% for message in messages %}
+            {% if message.tags == 'error' %}
+                const loginError = document.getElementById('login-error');
+                if (loginError) {
+                    alert('{{ message }}');
+                }
+            {% elif message.tags == 'success' %}
+                const loginSuccess = document.getElementById('login-success');
+                if (loginSuccess) {
+                    alert('{{ message }}');
+                }
+            {% endif %}
+            {% endfor %}
         </script>
     {% endif %}
 </html>

@@ -5,9 +5,10 @@ from gestione.models import *
 from django.db.models import Q
 from .forms import NewUserForm
 from django.contrib.auth import login, authenticate
+from django.contrib.auth import views as auth_views
 from django.contrib import messages
 from django.views import View
-from django.urls import reverse
+from django.urls import reverse, reverse_lazy
 from django.contrib.auth.decorators import login_required
 
 def get_mezzi():
@@ -42,9 +43,9 @@ def register_request(request):
 		if form.is_valid():
 			user = form.save()
 			login(request, user)
-			messages.success(request, "Registration successful." )
+			messages.success(request, "Registrazione avvenuta con successo" )
 			return redirect("/home")
-		messages.error(request, "Unsuccessful registration. Invalid information.")
+		messages.error(request, "Registrazione fallita, errore nel compilare il form")
 	form = NewUserForm()
 	return render (request=request, template_name="register.html", context={"register_form":form})
 
@@ -64,11 +65,18 @@ class CustomLoginView(View):
             redirect_url += '?' + '&'.join([f'{key}={value}' for key, value in user_data.items()])
             return redirect(redirect_url)
         else:
-            print("prova")
             login_url = reverse('home')
-            messages.error(request, 'Invalid login credentials')
+            messages.error(request, 'Credenziali login non valide')
 
         return redirect(login_url)
+
+class CustomLogoutView(auth_views.LogoutView):
+    next_page = reverse_lazy('home')
+
+    def dispatch(self, request, *args, **kwargs):
+        messages.success(request, 'Logout eseguito con successo')
+        return super().dispatch(request, *args, **kwargs)
+
 
 @login_required      
 def authHome_page(request):

@@ -19,7 +19,6 @@ from django.urls import path, include, re_path
 from .views import *
 from django.conf import settings
 from django.conf.urls.static import static
-from django.contrib.auth.views import LoginView, LogoutView
 from .initcmds import *
 
 urlpatterns = [
@@ -30,7 +29,8 @@ urlpatterns = [
     path('get_filtered_acc/', get_filtered_acc, name='get_filtered_acc'),
     path("register/", register_request, name="register"),
     path('login/', CustomLoginView.as_view(), name='login'),
-    path('authHome/?', authHome_page, name="authHome_page")
+    path('logout/', CustomLogoutView.as_view(), name="logout"),
+    path('authHome/', authHome_page, name="authHome_page")
 ]+ static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
 
 #erase_db()
