@@ -60,15 +60,8 @@ class CustomLoginView(View):
             try:
                 venditore = Venditore.objects.get(venditore=user)
                 return redirect('gestione:dashboard')
-                
-            except Venditore.DoesNotExist:
-                user_data = {
-                'nome': user.get_full_name(),
-                'username': user.username,
-            }
-            redirect_url = reverse('authHome_page')
-            redirect_url += '?' + '&'.join([f'{key}={value}' for key, value in user_data.items()])
-            return redirect(redirect_url)
+            except:                
+                return redirect( reverse('authHome_page'))
         else:
             login_url = reverse('home')
             messages.error(request, 'Credenziali login non valide')
@@ -85,9 +78,6 @@ class CustomLogoutView(auth_views.LogoutView):
 
 @login_required      
 def authHome_page(request):
-    nome_utente = request.GET.get('nome')
-    username_utente = request.GET.get('username')
-
     zipped_mezzi = get_mezzi()
     lista_fav = []
 
@@ -97,8 +87,7 @@ def authHome_page(request):
     ctx={"marche": marche,
         "zipped_mezzi": zipped_mezzi,
         "zipped_acc": zipped_acc,
-        "nome_utente": nome_utente,
-        "username": username_utente
+        "req": request,
     }
     return render(request, 'authHome.html', ctx)
 
