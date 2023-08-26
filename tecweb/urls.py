@@ -30,8 +30,7 @@ urlpatterns = [
     path('get_filtered_acc/', get_filtered_acc, name='get_filtered_acc'),
     path("register/", register_request, name="register"),
     path('login/', CustomLoginView.as_view(), name='login'),
-    path('logout/', LogoutView.as_view(), name='logout'),
-    path('authHome/', authHome_page, name="authHome_page")
+    path('authHome/?', authHome_page, name="authHome_page")
 ]+ static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
 
 #erase_db()

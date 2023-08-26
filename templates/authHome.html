@@ -1,3 +1,321 @@
 <html>
-    prova
+    <head>
+        {% load static %}
+        {% load humanize %}
+       
+        <title>
+            Super Dag Dal Gas! 
+        </title>
+        <style>
+            @import url({% static 'css/styles.css' %});
+            .*{
+                box-sizing: border-box;
+            }
+
+            .navbar {
+                overflow: hidden;
+                background-color: #333;
+            }
+            
+            .navbar p {
+            float: left;
+            font-size: 16px;
+            color: white;
+            text-align: center;
+            padding: 14px 16px;
+            text-decoration: none;
+            }
+            
+            .dropdown {
+            float: left;
+            overflow: hidden;
+            }
+            
+            .dropdown .dropbtn {
+            font-size: 16px;  
+            color: white;
+            padding: 14px 16px;
+            background-color: inherit;
+            font-family: inherit;
+            margin: 0;
+            border: 2px;
+            }
+            
+            .navbar a:hover, .dropdown:hover .dropbtn {
+            background-color: red;
+            }
+            
+            .dropdown-content {
+            display: none;
+            position: absolute;
+            background-color: #f9f9f9;
+            min-width: 160px;
+            box-shadow: 0px 8px 16px 0px rgba(0,0,0,0.2);
+            z-index: 1;
+            }
+            
+            .dropdown-content a {
+            float: none;
+            color: black;
+            padding: 12px 16px;
+            text-decoration: none;
+            display: block;
+            text-align: left;
+            }
+            
+            .dropdown-content a:hover {
+            background-color: #ddd;
+            }
+            
+            .dropdown:hover .dropdown-content {
+            display: block;
+            }
+            
+            .presentation{
+                background-image: url("{%static "/imgs/primaschermata.png"%}");
+                width: 100%;
+                height: 100%;
+                position: relative;
+                background-size: cover;
+            }
+
+            header{
+                background-image: url("{%static "/imgs/topres.png"%}");
+                flex: 1;
+                max-height: 10vh;
+                color: white;
+            }
+
+            .titolo1 {
+                display: flex;
+                flex-direction: column;
+                flex: 6;
+                background-image: url("{%static "/imgs/a.png"%}");
+            }
+            
+            .content {
+                background-image: url("{%static "/imgs/topres.png"%}");
+                height: auto;
+                overflow-y:auto;
+            }
+            
+
+            .logger form{
+                position: absolute;
+                inset: 4px;
+                padding: 20px 15px;
+                min-height:  34vh;
+                background-image:  url("{%static "/imgs/topres.png"%}");;
+                z-index: 2;
+            }
+
+            .fine{
+                background-image: url("{%static "/imgs/ultimaschermata.png"%}");
+                width: 100%;
+                height:99%;
+                background-size:cover;
+                position: relative;
+            }
+
+            
+        </style>
+    </head>
+    <body>
+        <div class="navbar"><
+                <p> Ciao, {{ nome_utente}}! </p>
+            <div class="dropdown">
+                <button class="dropbtn">Le tue azioni! 
+                <i class="fa fa-caret-down"></i>
+                </button>
+                <div class="dropdown-content">
+                <a href="#">I tuoi Preferiti</a>
+                <a href="#">Il tuo carrello</a>
+                <a href="#">Logout</a>
+                </div>
+            </div> 
+        </div>
+       <div align="center">
+            <div id="Mezzi" class="maincontent" >
+                <div class="ricerca-leftbar">
+                    <div class="selecter">
+                        <h2>
+                            Usa i tuoi filtri di ricerca!
+                        </h2>
+                        
+                        <select id="tipo_mezzo">
+                            <option value="tutti" selected>
+                                Tutti
+                            </option>
+                            <option value="auto">
+                                Automobili
+                            </option>
+                            <option value="moto">
+                                Motocicli
+                            </option>
+                        </select>
+                       
+                        <select id="new_used">
+                            <option value="tutti" selected>
+                                Tutti
+                            </option>
+                            <option value="u">
+                                Usato
+                            </option>
+                            <option value="n">
+                                Nuovo
+                            </option>
+                        </select>
+
+                        <h3 align="left">
+                            Marche:
+                        </h3>
+                        <div class="marche">
+                            {%for i in marche%}
+                                <div>
+                                    <input type="checkbox" id="{{ i }}" name="marca1" value="{{ i }}" checked>
+                                    <label for="{{ i }}"> {{ i }}</label><br>
+                                </div>
+                            {% endfor %}
+                        </div>
+
+                        <div class="prezzi">
+                            <h3 align="left">
+                                Prezzo:
+                            </h3>
+                                <label for="mezzo-prezzomin" align="left"> Prezzo minimo:</label>
+                                <input id="mezzo-prezzomin" type="number"/>
+                                <span class="br"></span>
+                                <label for="mezzo-prezzomax" align="left"> Prezzo massimo:</label>
+                                <input id="mezzo-prezzomax" type="number"/>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="titolo">
+                    <header>
+                        <h1>
+                            Top results
+                        </h1>
+                    </header>
+                    <main class="content">
+                        <article>
+                            <div id="mezzi-no-res" style="color: white; display:none">
+                                <h1>
+                                    Non ci sono risultati per questi filtri!
+                                </h1>
+                            </div>
+                            <div id="risultati_filtri" style="padding: 10px; height: 100%; display: flex; flex-wrap: wrap">
+                                {% for i, c in zipped_mezzi %}
+                                <a class="container" href="{% url 'gestione:mezzo-detail' c.id %}">
+                                    <button class="jumper">SCOPRI DI PIU'!</button>
+                                    <div class="carsnippet">
+                                        <img src="{{ i.fronte.url }}" width="280" height="200" align= "left"/>
+                                        <div id="descrizione" align= "right" style="text-align: left;">
+                                            <p style="font-size:32px; color:red; font-weight: bolder;margin-top: 0px; margin-bottom: 15px; text-decoration: none;">
+                                                {{ c.marca }} {{ c.modello }}
+                                            </p>
+                                            <p style="font-size:22px; color: green; font-weight: bolder; margin-top: 0px; margin-bottom: 15px">
+                                                {{ c.prezzo|intcomma }}€<br>
+                                            </p>
+                                            <p style="font-size:16px;">
+                                                {% if c.num_proprietari > 0 %}
+                                                    <p>Usato</p>
+                                                {% else %}
+                                                    <p style="font-weight: bold;">Nuovo</p>
+                                                {% endif %}
+                                                <span class="br"></span>
+                                                    {{ c.kilometraggio }} Km
+                                                <span class="br"></span>
+                                                    {{ c.data_fabbricazione|date:"m/Y"  }}
+                                                
+                                            </p>
+                                        </div>    
+                                    </div>
+                                </a>
+                                {% endfor %}
+                            </div>
+                        </article>
+                    </main>
+                </div>
+            </div>
+
+
+
+
+            <div id="accessori" class="maincontent" style="margin-top: 15px;">
+                <div class="ricerca-leftbar">
+                    <div class="selecter">
+                        <h2>
+                            Usa i tuoi filtri di ricerca!
+                        </h2>
+                        <select id="tipo_acc">
+                            <option value="tutto" selected>
+                                Tutti
+                            </option>
+                            <option value="auto">
+                                Automobili
+                            </option>
+                            <option value="moto">
+                                Motocicli
+                            </option>
+                        </select>
+                        
+                        <div class="prezzi">
+                            <h3 align="left">
+                                Prezzo:
+                            </h3>
+                                <label for="acc-prezzomin" align="left"> Prezzo minimo:</label>
+                                <input id="acc-prezzomin" type="number"/>
+                                <span class="br"></span>
+                                <label for="acc-prezzomax" align="left"> Prezzo massimo:</label>
+                                <input id="acc-prezzomax" type="number"/>
+                        </div>
+                    </div>
+
+                </div>
+                
+                <div class="titolo1">
+                    <header style="background-image: url("{%static "/imgs/a.png"%}");">
+                        <h1>
+                            I più richiesti!
+                        </h1>
+                    </header>
+                    <main style="background-image: url("{%static "/imgs/a.png"%}");" class="content">
+                        <article>
+                            <div id="risultati_filtri_acc" style="padding: 10px; width: 100%; height: 100%; display: flex; flex-wrap: wrap">
+                                {% for i, acc in zipped_acc %}
+                                <a class="container" href="{% url 'gestione:acc-detail' acc.id %}">
+                                    <button class="jumper">SCOPRI DI PIU'!</button>
+                                    <div class="carsnippet">
+                                        <img src="{{ i.foto1.url }}" width="280" height="200" align= "left"/>
+                                        <div id="descrizione" align= "right" style="text-align: left;">
+                                            <p style="font-size:26px; color:red; font-weight: bolder;margin-top: 0px; margin-bottom: 15px;">
+                                                {{ acc.nome }}
+                                            </p>
+                                            <p style="font-size:20px; color: green; font-weight: bolder; margin-top: 0px; margin-bottom: 15px">
+                                                {{ acc.prezzo }} €<br>
+                                            </p>
+                                            <p>{{ acc.descrizione|truncatechars:125 }}</p>
+                                        </div>    
+                                    </div>
+                                </a>
+                                {% endfor %}
+                            </div>
+                        </article>
+                    </main>
+                </div>
+            </div>
+            
+        </div>
+    </body>
+    <script src="{% static 'javascript/filtro.js' %}"></script>
+    <script>
+        const urlParams = new URLSearchParams(window.location.search);
+        const loginFailed = urlParams.get('login_failed');
+        const loginError = document.getElementById('login-error');
+    
+        if (loginFailed) {
+            alert('Invalid login!')
+        }
+    </script>
 </html>

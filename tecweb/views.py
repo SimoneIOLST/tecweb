@@ -10,20 +10,25 @@ from django.views import View
 from django.urls import reverse
 from django.contrib.auth.decorators import login_required
 
-def home_page(request):
-
+def get_mezzi():
     imm_mezzi = ImmaginiMacchina.objects.all()
     info_mezzi = Mezzo.objects.all()
     zipped_mezzi = zip(imm_mezzi, info_mezzi)
+    return  zipped_mezzi
 
+def get_accessori():
     imm_acc = ImmaginiAccessorio.objects.all()
     info_acc = Accessorio.objects.all()
     zipped_acc = zip(imm_acc, info_acc)
+    return zipped_acc
+
+def home_page(request):
+    zipped_mezzi = get_mezzi()
+    zipped_acc = get_accessori()
 
     marche = Mezzo.objects.values_list('marca', flat=True).distinct()
 
-    ctx={"title": "Sequenza di immagini",
-         "marche": marche,
+    ctx={"marche": marche,
         "zipped_mezzi": zipped_mezzi,
         "zipped_acc": zipped_acc,
     }
@@ -50,14 +55,31 @@ class CustomLoginView(View):
         user = authenticate(username=username, password=password)
         if user is not None:
             login(request, user)
-            return redirect('authHome_page')  
+            user_data = {
+                'nome': user.get_full_name(),
+                'username': user.username,
+            }
+            redirect_url = reverse('authHome_page')
+            redirect_url += '?' + '&'.join([f'{key}={value}' for key, value in user_data.items()])
+            return redirect(redirect_url)
         else:
             login_url = reverse('home') + '?login_failed=true'
             return redirect(login_url)
 
 @login_required      
 def authHome_page(request):
-    return render(request, 'authHome.html')
+    nome_utente = request.GET.get('nome')
+    username_utente = request.GET.get('username')
+    zipped_mezzi = get_mezzi()
+    zipped_acc = get_accessori()
+    marche = Mezzo.objects.values_list('marca', flat=True).distinct()
+    ctx={"marche": marche,
+        "zipped_mezzi": zipped_mezzi,
+        "zipped_acc": zipped_acc,
+        "nome_utente": nome_utente,
+        "username": username_utente
+    }
+    return render(request, 'authHome.html', ctx)
 
 def get_filtered_mezzi(request):
     filtri = {key: value for key, value in request.GET.items()}
