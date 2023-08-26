@@ -33,7 +33,9 @@ urlpatterns = [
     path('dashboard/', login_required(dashbord), name="dashboard"),
     path('venditore/oggetti/mod/', login_required(oggetti_venditore_mod), name='ogg-vend-mod'),
     path('venditore/oggetti/vis/', login_required(oggetti_venditore_vis), name='ogg-vend-vis'),
+    path('venditore/oggetti/del/', login_required(oggetti_venditore_del), name='ogg-vend-del'),
     path('venditore/oggetti/update/mezzo/<int:pk>/', login_required(MezzoUpdateView.as_view()), name='update_mezzo'),
     path('venditore/oggetti/update/accessorio/<int:pk>/', login_required(AccessorioUpdateView.as_view()), name='update_accessorio'),
-
+    path('venditore/oggetti/delete/mezzo/<int:pk>/', login_required(MezzoDeleteView.as_view()), name='delete_mezzo'),
+    path('venditore/oggetti/delete/accessorio/<int:pk>/', login_required(AccessorioDeleteView.as_view()), name='delete_accessorio')
 ]

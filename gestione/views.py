@@ -4,6 +4,7 @@ from django.urls import reverse_lazy, reverse
 from django.shortcuts import render, redirect
 from django.views.generic.edit import UpdateView
 from .forms import MezzoForm
+from django.core.exceptions import PermissionDenied
 
 class MezzoListView(ListView):
     model = Mezzo
@@ -109,7 +110,7 @@ def oggetti_venditore_mod(request):
         'mezzo_list': mezzo_list,
         'accessorio_list': accessorio_list,
     }
-    return render(request, 'gestione/oggvenditori.html', context)
+    return render(request, 'gestione/ModoggVenditori.html', context)
 
 def oggetti_venditore_vis(request):
     venditore = Venditore.objects.get(venditore_id=request.user)
@@ -137,3 +138,47 @@ class AccessorioUpdateView(UpdateView):
     
     def get_success_url(self):
         return reverse('gestione:dashboard')  
+    
+def oggetti_venditore_del(request):
+    venditore = Venditore.objects.get(venditore_id=request.user)
+    mezzo_list = Mezzo.objects.filter(venditore=venditore)
+    accessorio_list = Accessorio.objects.filter(venditore=venditore)
+
+    context = {
+        'mezzo_list': mezzo_list,
+        'accessorio_list': accessorio_list,
+    }
+    return render(request, 'gestione/listDel.html', context)
+
+class MezzoDeleteView(DeleteView):
+    model = Mezzo
+    template_name = 'gestione/delProd.html'
+
+    def get_success_url(self):
+        return reverse('gestione:dashboard')  
+
+    def get_queryset(self):
+        return Mezzo.objects.filter(venditore__venditore=self.request.user)
+    
+    def get_object(self, queryset=None):
+        obj = super().get_object(queryset=queryset)
+        if obj.venditore.venditore_id != self.request.user.id:
+            raise PermissionDenied
+        return obj
+
+class AccessorioDeleteView(DeleteView):
+    model = Accessorio
+    template_name = 'gestione/delProd.html'
+
+    def get_success_url(self):
+        return reverse('gestione:dashboard')  
+
+    def get_queryset(self):
+        return Mezzo.objects.filter(venditore__venditore=self.request.user)
+    
+    def get_object(self, queryset=None):
+        obj = super().get_object(queryset=queryset)
+        print(obj)
+        if obj.venditore.venditore_id != self.request.user.id:
+            raise PermissionDenied
+        return obj
