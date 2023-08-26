@@ -14,31 +14,31 @@
 
             .navbar {
                 overflow: hidden;
-                background-color: #333;
+                background-image: url("{%static "/imgs/topres.png"%}");
             }
             
             .navbar p {
-            float: left;
-            font-size: 16px;
-            color: white;
-            text-align: center;
-            padding: 14px 16px;
-            text-decoration: none;
+                padding: 5px;
+                float: left;
+                font-size: 20px;
+                text-align: center;
+                text-decoration: none;
             }
             
             .dropdown {
-            float: left;
-            overflow: hidden;
+                float: left;
+                overflow: hidden;
+                margin-top: 10px;
             }
             
             .dropdown .dropbtn {
-            font-size: 16px;  
-            color: white;
-            padding: 14px 16px;
-            background-color: inherit;
-            font-family: inherit;
-            margin: 0;
-            border: 2px;
+                position: relative;
+                font-size: 20px;  
+                padding: 15px;
+                background-color: inherit;
+                font-family: inherit;
+                margin: 0;
+                border: 2px;
             }
             
             .navbar a:hover, .dropdown:hover .dropbtn {
@@ -121,7 +121,7 @@
         </style>
     </head>
     <body>
-        <div class="navbar"><
+        <div class="navbar">
                 <p> Ciao, {{ nome_utente}}! </p>
             <div class="dropdown">
                 <button class="dropbtn">Le tue azioni! 
@@ -309,13 +309,4 @@
         </div>
     </body>
     <script src="{% static 'javascript/filtro.js' %}"></script>
-    <script>
-        const urlParams = new URLSearchParams(window.location.search);
-        const loginFailed = urlParams.get('login_failed');
-        const loginError = document.getElementById('login-error');
-    
-        if (loginFailed) {
-            alert('Invalid login!')
-        }
-    </script>
 </html>
