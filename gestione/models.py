@@ -1,9 +1,6 @@
 from django.db import models
-
-
-from django.db import models
 from django.db.models import Model
-# Create your models here.
+from django.contrib.auth.models import User
 
 class Venditore(Model):
     cf = models.CharField(max_length=16, primary_key=True)
@@ -67,3 +64,19 @@ class ImmaginiAccessorio(Model):
     
     class Meta:
         verbose_name_plural = "Immagini Accessori"
+
+class FavouriteMezzo(models.Model):
+    user = models.ForeignKey(User, on_delete=models.CASCADE)
+    mezzo = models.ForeignKey(Mezzo, on_delete=models.CASCADE)
+
+    class Meta:
+        unique_together = ('user', 'mezzo')
+        verbose_name_plural = "Mezzi favoriti"
+
+class FavouriteAccessorio(models.Model):
+    user = models.ForeignKey(User, on_delete=models.CASCADE)
+    acc = models.ForeignKey(Accessorio, on_delete=models.CASCADE)
+
+    class Meta:
+        unique_together = ('user', 'acc')
+        verbose_name_plural = "Accessori favoriti"

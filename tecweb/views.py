@@ -82,9 +82,15 @@ class CustomLogoutView(auth_views.LogoutView):
 def authHome_page(request):
     nome_utente = request.GET.get('nome')
     username_utente = request.GET.get('username')
+
     zipped_mezzi = get_mezzi()
+    lista_fav = []
+    for a, i in zipped_mezzi:
+        print(i)
+
     zipped_acc = get_accessori()
     marche = Mezzo.objects.values_list('marca', flat=True).distinct()
+
     ctx={"marche": marche,
         "zipped_mezzi": zipped_mezzi,
         "zipped_acc": zipped_acc,
