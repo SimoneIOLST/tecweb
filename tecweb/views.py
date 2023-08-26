@@ -84,7 +84,8 @@ def authHome_page(request):
     zipped_acc = get_accessori()
     marche = Mezzo.objects.values_list('marca', flat=True).distinct()
 
-    ctx={"marche": marche,
+    ctx={
+        "marche": marche,
         "zipped_mezzi": zipped_mezzi,
         "zipped_acc": zipped_acc,
         "req": request,
@@ -133,6 +134,7 @@ def get_filtered_mezzi(request):
     min=filtri["mezzo-prezzomin"]
     if(min != ''):
         ric_com &= Q(prezzo__gte=int(min))
+        
 
     max=filtri["mezzo-prezzomax"]
     if(max != ''):
@@ -140,16 +142,25 @@ def get_filtered_mezzi(request):
         if(max > 1000):
             ric_com &= Q(prezzo__lte=max)
 
-    if("kmin" in filtri.keys()):
+    #FILTRO SUI KM
+    if("kmmin" in filtri.keys()):
         kmin = filtri["kmmin"]
         if(kmin != ''):
-            ric_com &= Q(prezzo__gte=int(kmin))
+            ric_com &= Q(kilometraggio__gte=int(kmin))
 
-        kmax=filtri["mezzo-prezzomax"]
+        
+        kmax=filtri["kmmax"]
         if(kmax != ''):
             kmax=int(kmax)
+            print(kmax)
             if(kmax > 1000):
-                ric_com &= Q(prezzo__lte=kmax)
+                ric_com &= Q(kilometraggio__lte=kmax)
+
+    #FILTRO SULLA DATA
+    if("date" in filtri.keys()):
+        date = filtri["date"]
+        if(date != ''):
+            ric_com &= Q(data_fabbricazione__gt=date)
 
     queryset = Mezzo.objects.filter(ric_com)
     id_sel = []

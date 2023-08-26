@@ -3,23 +3,24 @@ const tipoMezzoSelect = document.getElementById('tipo_mezzo');
 const newUsedSelect = document.getElementById('new_used');
 const prezzoMinInput = document.getElementById('mezzo-prezzomin');
 const prezzoMaxInput = document.getElementById('mezzo-prezzomax');
+const DateInput = document.getElementById('Data');
+const kmMinInput = document.getElementById('kmmin');
+const kmMaxInput = document.getElementById('kmmax');
 
-const kmMinInput = document.getElementById('mezzo-kmmin');
-const kmMaxInput = document.getElementById('mezzo-kmmax');
-
-tipoMezzoSelect.addEventListener('change', aggiornaRisMezzzi);
-newUsedSelect.addEventListener('change', aggiornaRisMezzzi);
-prezzoMinInput.addEventListener('input', aggiornaRisMezzzi);
-prezzoMaxInput.addEventListener('input', aggiornaRisMezzzi);
-kmMinInput.addEventListener('input', aggiornaRisMezzzi);
-kmMaxInput.addEventListener('input', aggiornaRisMezzzi);
+tipoMezzoSelect.addEventListener('change', aggiornaRisMezzi);
+newUsedSelect.addEventListener('change', aggiornaRisMezzi);
+prezzoMinInput.addEventListener('input', aggiornaRisMezzi);
+prezzoMaxInput.addEventListener('input', aggiornaRisMezzi);
+kmMinInput.addEventListener('input', aggiornaRisMezzi);
+kmMaxInput.addEventListener('input', aggiornaRisMezzi);
+DateInput.addEventListener('change', aggiornaRisMezzi)
 
 marche.forEach(checkbox => {
-    checkbox.addEventListener('change', aggiornaRisMezzzi);
+    checkbox.addEventListener('change', aggiornaRisMezzi);
 });
 
 // Function to update the displayed results based on selected filters
-function aggiornaRisMezzzi() {
+function aggiornaRisMezzi() {
     var marca = [];
     const filtri = { marca };
     
@@ -35,6 +36,7 @@ function aggiornaRisMezzzi() {
     filtri["mezzo-prezzomax"] = prezzoMaxInput.value;
     filtri["kmmin"] = kmMinInput.value;
     filtri["kmmax"] = kmMaxInput.value;
+    filtri["date"] = DateInput.value;
 
     fetch(`/get_filtered_mezzi/?${new URLSearchParams(filtri)}`)
         //controllo network
