@@ -140,6 +140,17 @@ def get_filtered_mezzi(request):
         if(max > 1000):
             ric_com &= Q(prezzo__lte=max)
 
+    if("kmin" in filtri.keys()):
+        kmin = filtri["kmmin"]
+        if(kmin != ''):
+            ric_com &= Q(prezzo__gte=int(kmin))
+
+        kmax=filtri["mezzo-prezzomax"]
+        if(kmax != ''):
+            kmax=int(kmax)
+            if(kmax > 1000):
+                ric_com &= Q(prezzo__lte=kmax)
+
     queryset = Mezzo.objects.filter(ric_com)
     id_sel = []
     for i in queryset:
