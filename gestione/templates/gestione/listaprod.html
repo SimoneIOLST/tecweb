@@ -8,7 +8,7 @@
 <ul>
     {% for mezzo in mezzo_list %}
         <li>
-            <a href="{% url 'gestione:update_mezzo' mezzo.pk %}">
+            <a href="{% url 'gestione:mezzo-detail' mezzo.pk %}">
                 {{ mezzo.marca }} {{ mezzo.modello }}
             </a>
         </li>
@@ -19,7 +19,7 @@
 <ul>
     {% for accessorio in accessorio_list %}
         <li>
-            <a href="{% url 'gestione:update_accessorio' accessorio.pk %}">
+            <a href="{% url 'gestione:acc-detail' accessorio.pk %}">
                 {{ accessorio.nome }}
             </a>
         </li>

@@ -1,5 +1,5 @@
 from .models import Mezzo, ImmaginiMacchina, Accessorio, ImmaginiAccessorio, Venditore
-from django.views.generic import DetailView, ListView, CreateView
+from django.views.generic import DetailView, ListView, CreateView, DeleteView
 from django.urls import reverse_lazy, reverse
 from django.shortcuts import render, redirect
 from django.views.generic.edit import UpdateView
@@ -100,7 +100,7 @@ class CreateImmaginiAccessorioView(CreateView):
 def dashbord(request):
     return render(request, "gestione/dashboard.html")
 
-def oggetti_venditore(request):
+def oggetti_venditore_mod(request):
     venditore = Venditore.objects.get(venditore_id=request.user)
     mezzo_list = Mezzo.objects.filter(venditore=venditore)
     accessorio_list = Accessorio.objects.filter(venditore=venditore)
@@ -110,6 +110,17 @@ def oggetti_venditore(request):
         'accessorio_list': accessorio_list,
     }
     return render(request, 'gestione/oggvenditori.html', context)
+
+def oggetti_venditore_vis(request):
+    venditore = Venditore.objects.get(venditore_id=request.user)
+    mezzo_list = Mezzo.objects.filter(venditore=venditore)
+    accessorio_list = Accessorio.objects.filter(venditore=venditore)
+
+    context = {
+        'mezzo_list': mezzo_list,
+        'accessorio_list': accessorio_list,
+    }
+    return render(request, 'gestione/listaprod.html', context)
 
 class MezzoUpdateView(UpdateView):
     model = Mezzo

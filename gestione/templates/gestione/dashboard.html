@@ -50,7 +50,7 @@
         </a>
     </div>
     <div class="item">
-        <a href="{%url "gestione:ogg-vend"%}">
+        <a href="{%url "gestione:ogg-vend-mod"%}">
             Modifica prodotto
         </a>
     </div>
@@ -59,6 +59,10 @@
             Elimina prodotto
         </a>
     </div>
+    <div>
+        <a style="font-size:24; color: black" href="{% url 'gestione:ogg-vend-vis' %}" style="margin-top: 25px;">Guarda i tuoi prodotti!</a>
+    </div>
 </div>
+
 {% endblock %}
 
