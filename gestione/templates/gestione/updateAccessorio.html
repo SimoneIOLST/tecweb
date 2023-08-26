@@ -1,0 +1,16 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Update Mezzo</title>
+</head>
+<body>
+    <h1>Update Mezzo</h1>
+    <form method="post">
+        {% csrf_token %}
+        {{ form.as_p }}
+        <button type="submit">Update Mezzo</button>
+    </form>
+    <br>
+    <a href="{% url 'gestione:mezzo-list' %}">Back to Mezzo List</a>
+</body>
+</html>

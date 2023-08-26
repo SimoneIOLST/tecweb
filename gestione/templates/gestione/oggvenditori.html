@@ -1,0 +1,28 @@
+{% extends 'gestione/common.html' %}
+{% block title%} 
+    Dashbord venditore
+{% endblock %}
+{%block content%}
+<h1>I tuoi Oggetti:</h1>
+<h2>I tuoi mezzi:</h2>
+<ul>
+    {% for mezzo in mezzo_list %}
+        <li>
+            <a href="{% url 'gestione:update_mezzo' mezzo.pk %}">
+                {{ mezzo.marca }} {{ mezzo.modello }}
+            </a>
+        </li>
+    {% endfor %}
+</ul>
+
+<h2>I tuoi accessori</h2>
+<ul>
+    {% for accessorio in accessorio_list %}
+        <li>
+            <a href="{% url 'gestione:update_accessorio' accessorio.pk %}">
+                {{ accessorio.nome }}
+            </a>
+        </li>
+    {% endfor %}
+</ul>
+{%endblock%}

@@ -16,6 +16,7 @@ Including another URLconf
 
 from django.urls import path
 from .views import *
+from django.contrib.auth.decorators import login_required
 
 
 app_name = "gestione"
@@ -29,5 +30,9 @@ urlpatterns = [
     path('creaimmmacc/<int:car_id>/', CreateImmaginiMacchinaView.as_view(), name="IM-crea"),
     path('creaaccessorio/', CreateAccView.as_view(), name="acc-crea"),
     path('creaIA/<int:acc_id>/', CreateImmaginiAccessorioView.as_view(), name="IA-crea"),
-    path('venditoredashboard/', dashbord, name="dashboard")
+    path('dashboard/', dashbord, name="dashboard"),
+    path('venditore/oggetti/', login_required(oggetti_venditore), name='ogg-vend'),
+    path('venditore/oggetti/update/mezzo/<int:pk>/', MezzoUpdateView.as_view(), name='update_mezzo'),
+    path('venditore/oggetti/update/accessorio/<int:pk>/', AccessorioUpdateView.as_view(), name='update_accessorio'),
+
 ]

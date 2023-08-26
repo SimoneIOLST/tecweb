@@ -2,6 +2,7 @@ from .models import Mezzo, ImmaginiMacchina, Accessorio, ImmaginiAccessorio, Ven
 from django.views.generic import DetailView, ListView, CreateView
 from django.urls import reverse_lazy, reverse
 from django.shortcuts import render, redirect
+from django.views.generic.edit import UpdateView
 from .forms import MezzoForm
 
 class MezzoListView(ListView):
@@ -98,3 +99,30 @@ class CreateImmaginiAccessorioView(CreateView):
     
 def dashbord(request):
     return render(request, "gestione/dashboard.html")
+
+def oggetti_venditore(request):
+    venditore = Venditore.objects.get(venditore_id=request.user)
+    mezzo_list = Mezzo.objects.filter(venditore=venditore)
+    accessorio_list = Accessorio.objects.filter(venditore=venditore)
+
+    context = {
+        'mezzo_list': mezzo_list,
+        'accessorio_list': accessorio_list,
+    }
+    return render(request, 'gestione/oggvenditori.html', context)
+
+class MezzoUpdateView(UpdateView):
+    model = Mezzo
+    template_name = 'gestione/updateMezzo.html'
+    fields =  ["moto", "marca", "modello", "prezzo", "data_fabbricazione",
+               "kilometraggio", "colore", "num_proprietari"]
+    def get_success_url(self):
+        return reverse('gestione:dashboard')  
+
+class AccessorioUpdateView(UpdateView):
+    model = Accessorio
+    template_name = 'gestione/updateAccessorio.html'
+    fields =   ["per_moto", "nome", "descrizione", "prezzo"]
+    
+    def get_success_url(self):
+        return reverse('gestione:dashboard')  
