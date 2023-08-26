@@ -2,9 +2,63 @@
 {% block title%} 
     Dashbord venditore
 {% endblock %}
+
+{%block head%}
+    {%load static%}
+    <style>
+        body{
+            background-color: #DFF2EF;
+            display: 
+        }
+
+        .container {
+            padding: 20px;
+            display: flex;
+            flex-wrap: wrap;
+            height: 90%;
+            width: 90%;
+          }
+          
+          .item {
+            line-height: 300px;
+            margin: 20px;
+            padding: 2%;
+            width: 40%;
+            height: 40%;
+            border: 1px solid #eee;
+            background-color: white;
+          }
+
+          .container a{
+            font-size: 40;
+            color:black;
+            text-decoration: none;
+          }
+    </style>
+{% endblock %}
+
 {% block content %}
-    <h1 style="font-size:36" align="center">
-       PROVA
-    </h1>
+<div class="container" align="center">
+    <div class="item"> 
+        <a href="{%url "gestione:mezzo-crea"%}">
+            Inserisci mezzo
+        </a>
+    </div>
+    <div class="item">
+        <a href="{%url "gestione:acc-crea"%}">
+            Inserisci accessorio
+        </a>
+    </div>
+    <div class="item">
+        <a href="{%url "gestione:dashboard"%}">
+            Modifica prodotto
+        </a>
+    </div>
+    <div class="item">
+        <a href="{%url "gestione:dashboard"%}">
+            Elimina prodotto
+        </a>
+    </div>
+</div>
 {% endblock %}
 
