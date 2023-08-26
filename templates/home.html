@@ -151,6 +151,7 @@
                             <input type="submit" value="Login">
                         </form>
                     </div>
+                    <div id="login-error"></div>
                 </div>
                 
                 <div class="titolo">
@@ -278,13 +279,14 @@
         </nav>
     </body>
     <script src="{% static 'javascript/filtro.js' %}"></script>
-    <script>
-        const urlParams = new URLSearchParams(window.location.search);
-        const loginFailed = urlParams.get('login_failed');
-        const loginError = document.getElementById('login-error');
-    
-        if (loginFailed) {
-            alert('Invalid login!')
-        }
-    </script>
+    {% if messages %}
+        <script>
+            const loginError = document.getElementById('login-error');
+            console.log(loginError);
+            console.log("prova");
+            if (loginError) {
+                alert('Invalid login!');
+            }
+        </script>
+    {% endif %}
 </html>

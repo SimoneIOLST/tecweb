@@ -32,7 +32,8 @@ def home_page(request):
         "zipped_mezzi": zipped_mezzi,
         "zipped_acc": zipped_acc,
     }
-
+    storage = messages.get_messages(request)
+    storage.used = True
     return render(request, template_name="home.html", context=ctx)
 
 def register_request(request):
@@ -63,8 +64,11 @@ class CustomLoginView(View):
             redirect_url += '?' + '&'.join([f'{key}={value}' for key, value in user_data.items()])
             return redirect(redirect_url)
         else:
-            login_url = reverse('home') + '?login_failed=true'
-            return redirect(login_url)
+            print("prova")
+            login_url = reverse('home')
+            messages.error(request, 'Invalid login credentials')
+
+        return redirect(login_url)
 
 @login_required      
 def authHome_page(request):
