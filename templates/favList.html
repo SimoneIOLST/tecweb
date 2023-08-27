@@ -1,0 +1,99 @@
+<html>
+    <head>
+        {% load static %}
+        {% load humanize %}
+        <title>
+            I tuoi favoriti
+        </title>
+        <style>
+            @import url({% static 'css/authStyles.css' %});
+        </style>
+    </head>
+    <body>
+        <h1>Ecco tutti i tuoi preferiti!</h1>
+        <div id="risultati_filtri" style="padding: 10px; height: 100%; display: flex; flex-wrap: wrap">
+            {% for i, c in zipped_mezzi %}
+            <div class="container">
+                <a align = "center" style="padding: 0px; height: 7%; width: 100%; text-decoration: none !important;" href="#" class="remove-from-favorites" data-object-type="mezzo" data-object-id="{{ c.id }}">Rimuovi dai preferiti</a>
+                
+                <a class="prova" href="{% url 'gestione:mezzo-detail' c.id %}">
+                    <button class="jumper">SCOPRI DI PIU'!</button>
+            
+                    <div class="carsnippet">
+                        <img src="{{ i.fronte.url }}" width="280" height="200" align= "left"/>
+                        <div id="descrizione" align= "right" style="text-align: left;">
+                            <p style="font-size:32px; color:red; font-weight: bolder;margin-top: 0px; margin-bottom: 15px; text-decoration: none;">
+                                {{ c.marca }} {{ c.modello }}
+                            </p>
+                            <p style="font-size:22px; color: green; font-weight: bolder; margin-top: 0px; margin-bottom: 15px">
+                                {{ c.prezzo|intcomma }}€<br>
+                            </p>
+                            <p style="font-size:16px;">
+                                {% if c.num_proprietari > 0 %}
+                                    <p>Usato</p>
+                                {% else %}
+                                    <p style="font-weight: bold;">Nuovo</p>
+                                {% endif %}
+                                <span class="br"></span>
+                                    {{ c.kilometraggio }} Km
+                                <span class="br"></span>
+                                    {{ c.data_fabbricazione|date:"m/Y"  }}
+                                
+                            </p>
+                        </div>    
+                    </div>
+                </a>
+            </div>
+            {% endfor %}
+        </div>
+        <div id="risultati_filtri_acc" style="padding: 10px; width: 100%; height: 100%; display: flex; flex-wrap: wrap">
+            {% for i, acc in zipped_acc %}
+                <div class="container">
+                    <a style="padding: 0px; height: 7%; width: 100%; text-decoration: none !important;" align = "center" href="#" class="remove-from-favorites" data-object-type="accessorio" data-object-id="{{ acc.id }}">Rimuovi dai preferiti</a>
+                    <a class="prova" href="{% url 'gestione:acc-detail' acc.id %}">
+                        <button class="jumper">SCOPRI DI PIU'!</button>
+                        <div class="carsnippet">
+                            <img src="{{ i.foto1.url }}" width="280" height="200" align= "left"/>
+                            <div id="descrizione" align= "right" style="text-align: left;">
+                                <p style="font-size:26px; color:red; font-weight: bolder;margin-top: 0px; margin-bottom: 15px;">
+                                    {{ acc.nome }}
+                                </p>
+                                <p style="font-size:20px; color: green; font-weight: bolder; margin-top: 0px; margin-bottom: 15px">
+                                    {{ acc.prezzo }} €<br>
+                                </p>
+                                <p>{{ acc.descrizione|truncatechars:125 }}</p>
+                            </div>    
+                        </div>
+                    </a>
+                </div>
+            {% endfor %}
+        </div>
+        <a href="{% url "authHome_page" %}"> Torna alla home! </a>
+    </body>
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    <script>
+        $(document).ready(function() {
+            $(".remove-from-favorites").click(function(e) {
+                e.preventDefault();
+                var object_type = $(this).data("object-type");
+                var object_id = $(this).data("object-id");
+                
+                var clickedLink = $(this); // Store the clicked link for later use
+                
+                $.ajax({
+                    url: `/remove_from_favorites/${object_type}/${object_id}/`,
+                    type: "GET",
+                    success: function(response) {
+                        alert(response.message);
+                        
+                        // Remove the clicked link's container (parent element)
+                        clickedLink.closest('.container').remove();
+                    },
+                    error: function() {
+                        alert("Error removing from favorites.");
+                    }
+                });
+            });
+        });
+    </script>
+</html>

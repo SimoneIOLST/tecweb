@@ -248,3 +248,32 @@ def remove_from_favorites(request, object_type, object_id):
         return JsonResponse({"message": "Prodotto rimosso dalla tua lista dei preferiti!"})
     except (Mezzo.DoesNotExist, Accessorio.DoesNotExist):
         return JsonResponse({"message": "Object not found"}, status=404)
+    
+@login_required
+def favorite_objects(request):
+    user = request.user
+    fav_mezz = FavouriteMezzo.objects.filter(user=user).select_related('mezzo')
+    fav_acc = FavouriteAccessorio.objects.filter(user=user).select_related('acc')
+    
+    mezz_id_sel = []
+    for i in fav_mezz:
+        mezz_id_sel.append(i.mezzo.id)
+    info_mezzi = Mezzo.objects.filter(id__in=mezz_id_sel)
+    imm_query = ImmaginiMacchina.objects.filter(car_id__in=mezz_id_sel)
+    zipped_mezzi = zip(imm_query, info_mezzi)
+
+
+
+    acc_id_sel = []
+    for i in fav_acc:
+        acc_id_sel.append(i.id)
+    
+    info_acc = Accessorio.objects.filter(id__in=acc_id_sel)
+    imm_query = ImmaginiAccessorio.objects.filter(acc_id__in=acc_id_sel)
+    zipped_acc = zip(imm_query, info_acc)
+
+    context = {
+        'zipped_mezzi': zipped_mezzi,
+        'zipped_acc': zipped_acc,
+    }
+    return render(request, 'favList.html', context)

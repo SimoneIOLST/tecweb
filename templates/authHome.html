@@ -2,7 +2,6 @@
     <head>
         {% load static %}
         {% load humanize %}
-       
         <title>
             Super Dag Dal Gas! 
         </title>
@@ -128,7 +127,7 @@
                 <i class="fa fa-caret-down"></i>
                 </button>
                 <div class="dropdown-content">
-                <a href="#">I tuoi Preferiti</a>
+                <a href="{% url 'favorite_objects' %}">I tuoi Preferiti</a>
                 <a href="#">Il tuo carrello</a>
                 <a href="{% url 'logout' %}">Logout</a>
                 </div>
@@ -224,39 +223,37 @@
                             <div id="risultati_filtri" style="padding: 10px; height: 100%; display: flex; flex-wrap: wrap">
                                 {% for i, c in zipped_mezzi %}
                                 <div class="container">
-                                <a style="padding: 0px; height: 7%; width: 47%; text-decoration: none !important;" href="#" class="add-to-favorites" data-object-type="mezzo" data-object-id="{{ c.id }}">Aggiungi ai preferiti</a>
-                                <a style="padding: 0px; height: 7%; width: 47%; text-decoration: none !important;" href="#" class="remove-from-favorites" data-object-type="mezzo" data-object-id="{{ c.id }}">Rimuovi dai preferiti</a>
-                                
-                                <a class="prova" href="{% url 'gestione:mezzo-detail' c.id %}">
-                                    <button class="jumper">SCOPRI DI PIU'!</button>
-                               
-                                    <div class="carsnippet">
-                                        <img src="{{ i.fronte.url }}" width="280" height="200" align= "left"/>
-                                        <div id="descrizione" align= "right" style="text-align: left;">
-                                            <p style="font-size:32px; color:red; font-weight: bolder;margin-top: 0px; margin-bottom: 15px; text-decoration: none;">
-                                                {{ c.marca }} {{ c.modello }}
-                                            </p>
-                                            <p style="font-size:22px; color: green; font-weight: bolder; margin-top: 0px; margin-bottom: 15px">
-                                                {{ c.prezzo|intcomma }}€<br>
-                                            </p>
-                                            <p style="font-size:16px;">
-                                                {% if c.num_proprietari > 0 %}
-                                                    <p>Usato</p>
-                                                {% else %}
-                                                    <p style="font-weight: bold;">Nuovo</p>
-                                                {% endif %}
-                                                <span class="br"></span>
-                                                    {{ c.kilometraggio }} Km
-                                                <span class="br"></span>
-                                                    {{ c.data_fabbricazione|date:"m/Y"  }}
-                                                
-                                            </p>
-                                        </div>    
-                                    </div>
+                                    <a style="padding: 0px; height: 7%; width: 47%; text-decoration: none !important;" href="#" class="add-to-favorites" data-object-type="mezzo" data-object-id="{{ c.id }}">Aggiungi ai preferiti</a>
+                                    <a style="padding: 0px; height: 7%; width: 47%; text-decoration: none !important;" href="#" class="remove-from-favorites" data-object-type="mezzo" data-object-id="{{ c.id }}">Rimuovi dai preferiti</a>
                                     
-                                </a>
-                            </div>
+                                    <a class="prova" href="{% url 'gestione:mezzo-detail' c.id %}">
+                                        <button class="jumper">SCOPRI DI PIU'!</button>
                                 
+                                        <div class="carsnippet">
+                                            <img src="{{ i.fronte.url }}" width="280" height="200" align= "left"/>
+                                            <div id="descrizione" align= "right" style="text-align: left;">
+                                                <p style="font-size:32px; color:red; font-weight: bolder;margin-top: 0px; margin-bottom: 15px; text-decoration: none;">
+                                                    {{ c.marca }} {{ c.modello }}
+                                                </p>
+                                                <p style="font-size:22px; color: green; font-weight: bolder; margin-top: 0px; margin-bottom: 15px">
+                                                    {{ c.prezzo|intcomma }}€<br>
+                                                </p>
+                                                <p style="font-size:16px;">
+                                                    {% if c.num_proprietari > 0 %}
+                                                        <p>Usato</p>
+                                                    {% else %}
+                                                        <p style="font-weight: bold;">Nuovo</p>
+                                                    {% endif %}
+                                                    <span class="br"></span>
+                                                        {{ c.kilometraggio }} Km
+                                                    <span class="br"></span>
+                                                        {{ c.data_fabbricazione|date:"m/Y"  }}
+                                                    
+                                                </p>
+                                            </div>    
+                                        </div>
+                                    </a>
+                                </div>
                                 {% endfor %}
                             </div>
                         </article>
