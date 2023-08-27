@@ -219,3 +219,32 @@ def get_filtered_acc(request):
 
     result_html = render_to_string('filteredAcc.html', {'queryset': zipped_acc})
     return JsonResponse({'result_html': result_html})
+
+
+@login_required
+def add_to_favorites(request, object_type, object_id):
+    user = request.user
+    try:
+        if object_type == "mezzo":
+            mezzo = Mezzo.objects.get(id=object_id)
+            FavouriteMezzo.objects.get_or_create(user=user, mezzo=mezzo)
+        elif object_type == "accessorio":
+            accessorio = Accessorio.objects.get(id=object_id)
+            FavouriteAccessorio.objects.get_or_create(user=user, acc=accessorio)
+        return JsonResponse({"message": "Prodotto aggiunto alla tua lista dei preferiti!"})
+    except (Mezzo.DoesNotExist, Accessorio.DoesNotExist):
+        return JsonResponse({"message": "Object not found"}, status=404)
+    
+@login_required
+def remove_from_favorites(request, object_type, object_id):
+    user = request.user
+    try:
+        if object_type == "mezzo":
+            mezzo = Mezzo.objects.get(id=object_id)
+            FavouriteMezzo.objects.filter(user=user, mezzo=mezzo).delete()
+        elif object_type == "accessorio":
+            accessorio = Accessorio.objects.get(id=object_id)
+            FavouriteAccessorio.objects.filter(user=user, acc=accessorio).delete()
+        return JsonResponse({"message": "Prodotto rimosso dalla tua lista dei preferiti!"})
+    except (Mezzo.DoesNotExist, Accessorio.DoesNotExist):
+        return JsonResponse({"message": "Object not found"}, status=404)
