@@ -10,6 +10,7 @@ from django.contrib import messages
 from django.views import View
 from django.urls import reverse, reverse_lazy
 from django.contrib.auth.decorators import login_required
+from .rec_sys import recommend_mezzi
 
 def get_mezzi():
     imm_mezzi = ImmaginiMacchina.objects.all()
@@ -78,8 +79,14 @@ class CustomLogoutView(auth_views.LogoutView):
 
 @login_required      
 def authHome_page(request):
-    zipped_mezzi = get_mezzi()
-    lista_fav = []
+    info_mezzo = recommend_mezzi(request.user)
+    imm_ord = []
+    for i in info_mezzo:
+        print(ImmaginiMacchina.objects.filter(car_id = i.id)[0].fronte.url)
+        imm_ord.append(ImmaginiMacchina.objects.filter(car_id = i.id)[0])
+
+
+    zipped_mezzi = zip(imm_ord, info_mezzo)
 
     zipped_acc = get_accessori()
     marche = Mezzo.objects.values_list('marca', flat=True).distinct()
@@ -152,7 +159,6 @@ def get_filtered_mezzi(request):
         kmax=filtri["kmmax"]
         if(kmax != ''):
             kmax=int(kmax)
-            print(kmax)
             if(kmax > 1000):
                 ric_com &= Q(kilometraggio__lte=kmax)
 
@@ -277,3 +283,15 @@ def favorite_objects(request):
         'zipped_acc': zipped_acc,
     }
     return render(request, 'favList.html', context)
+
+@login_required
+def raccomandati(request):
+    user = request.user
+
+    recommended_mezzi = recommend_mezzi(user)
+
+    context = {
+        'recommended_mezzi': recommended_mezzi,
+    }
+
+    return render(request, 'recc.html', context)

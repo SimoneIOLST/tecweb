@@ -1,3 +1,6 @@
+html{
+    scroll-behavior: smooth;
+}
 .br {
     display: block;
     margin-bottom: 0.5em;

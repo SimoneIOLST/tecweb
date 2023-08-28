@@ -9,7 +9,7 @@
     {% for mezzo in mezzo_list %}
         <li>
             <a href="{% url 'gestione:update_mezzo' mezzo.pk %}">
-                {{ mezzo.marca }} {{ mezzo.modello }}
+                {{ mezzo.marca }} {{ mezzo.modello }} ({{mezzo.vin }})
             </a>
         </li>
     {% endfor %}
@@ -20,7 +20,7 @@
     {% for accessorio in accessorio_list %}
         <li>
             <a href="{% url 'gestione:update_accessorio' accessorio.pk %}">
-                {{ accessorio.nome }}
+                {{ accessorio.nome }} {{ accessorio.id }}
             </a>
         </li>
     {% endfor %}
