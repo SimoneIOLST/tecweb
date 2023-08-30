@@ -1,0 +1,93 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        {%load static%}
+        {%load humanize%}
+        <title>Il tuo carrello</title>
+    </head>
+    <body>
+        <h1>Gli oggetti nel tuo carrello!</h1>
+        
+        {% if cart %}
+            <table border="2">
+                <thead>
+                    <tr>
+                        <th>Prodotto</th>
+                        <th>Dettagli</th>
+                        <th>Prezzo</th>
+                        <th>Rimuovi</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for item in cart.items.all %}
+                        <tr>
+                            <td>
+                                {% if item.mezzo %}
+                                    Mezzo: {{ item.mezzo.marca }} {{ item.mezzo.modello }}
+                                {% elif item.accessorio %}
+                                    Accessorio: {{ item.accessorio.nome }}
+                                {% endif %}
+                            </td>
+                            <td>
+                                {% if item.mezzo %}
+                                    <a href="{% url 'gestione:mezzo-detail' item.mezzo.id %}">
+                                        Vedi di più!
+                                    </a>
+                                {% elif item.accessorio %}
+                                    <a href="{% url 'gestione:acc-detail' item.accessorio.id %}">
+                                        Vedi di più!
+                                    </a>
+                                {% endif %}
+                            </td>
+                            <td>
+                                {% if item.mezzo %}
+                                    {{ item.mezzo.prezzo|intcomma }}€
+                                {% elif item.accessorio %}
+                                    {{ item.accessorio.prezzo }}€
+                                {% endif %}
+                            </td>
+                            <td>
+                                {% if item.mezzo %}
+                                    <a href="#" class="remove-from-cart" data-object-type="mezzo" data-object-id="{{ item.mezzo.id }}">Rimuovi dal carrello</a>
+                                {% elif item.accessorio %}
+                                    <a href="#" class="remove-from-cart" data-object-type="accessorio" data-object-id="{{ item.accessorio.id }}">Rimuovi dal carrello</a>
+                                {% endif %}
+                                
+                            </td>
+                        </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+            <h2>
+                Costo totale: {{cart.get_costo_tot|intcomma }}€</td>
+            </h2>
+
+        {% else %}
+            <p>Your cart is empty.</p>
+        {% endif %}
+        
+        <a href="{% url 'authHome_page' %}">Back to Home</a>
+    </body>
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    <script>
+        $(document).ready(function() {
+            $(".remove-from-cart").click(function(e) {
+                e.preventDefault();
+                var object_type = $(this).data("object-type");
+                var object_id = $(this).data("object-id");
+                $.ajax({
+                    url: `/remove_from_cart/${object_type}/${object_id}/`,
+                    type: "GET",
+                    success: function(response) {
+                        alert(response.message);
+                        window.location.reload();
+                        // Optionally, you can refresh the page or update the UI to reflect the change
+                    },
+                    error: function() {
+                        alert("C'è stato un errore mentre rimuovevi dal carrello, riprova.");
+                    }
+                });
+            });
+        });
+    </script>
+</html>

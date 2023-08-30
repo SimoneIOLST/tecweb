@@ -81,3 +81,57 @@ class FavouriteAccessorio(models.Model):
     class Meta:
         unique_together = ('user', 'acc')
         verbose_name_plural = "Accessori favoriti"
+
+class OggettoCart(models.Model):
+    user = models.ForeignKey(User, on_delete=models.CASCADE)
+    mezzo = models.ForeignKey('Mezzo', on_delete=models.CASCADE, null=True)
+    accessorio = models.ForeignKey('Accessorio', on_delete=models.CASCADE, null=True)
+
+class Carrello(models.Model):
+    user = models.OneToOneField(User, on_delete=models.CASCADE)
+    items = models.ManyToManyField(OggettoCart, related_name='cerrello')
+
+    def add_to_cart(self, item_type, item_id):
+        try:
+            if item_type == 'mezzo':
+                item = Mezzo.objects.get(pk=item_id)
+                cart_item, created = OggettoCart.objects.get_or_create(user=self.user, mezzo=item)
+            elif item_type == 'accessorio':
+                item = Accessorio.objects.get(pk=item_id)
+                cart_item, created = OggettoCart.objects.get_or_create(user=self.user, accessorio=item)
+            
+            self.items.add(cart_item)
+            
+            return True
+        except (Mezzo.DoesNotExist, Accessorio.DoesNotExist):
+            return False
+
+    def remove_from_cart(self, item_type=None, item_id=None):
+        try:
+            if item_type == 'mezzo':
+                item = Mezzo.objects.get(pk=item_id)
+                cart_item = OggettoCart.objects.filter(user=self.user, mezzo=item).first()
+            elif item_type == 'accessorio':
+                item = Accessorio.objects.get(pk=item_id)
+                cart_item = OggettoCart.objects.filter(user=self.user, accessorio=item).first()
+
+            if cart_item:
+                cart_item.delete()
+            return True
+        except:
+            return False
+        
+    def get_items(self):
+        return self.items.all()
+
+    def get_costo_tot(self):
+        costo_tot=0
+        for item in self.get_items():
+            if(item.mezzo):
+                costo_tot += item.mezzo.prezzo
+            else:
+                costo_tot += item.accessorio.prezzo
+        return costo_tot
+    
+    class Meta:
+        verbose_name_plural = "Carrelli"

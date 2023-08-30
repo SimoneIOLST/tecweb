@@ -1,5 +1,5 @@
 from django.http import JsonResponse
-from django.shortcuts import render, redirect
+from django.shortcuts import render, redirect, get_object_or_404
 from django.template.loader import render_to_string
 from gestione.models import *
 from django.db.models import Q
@@ -84,7 +84,6 @@ def authHome_page(request):
     for i in info_mezzo:
         print(ImmaginiMacchina.objects.filter(car_id = i.id)[0].fronte.url)
         imm_ord.append(ImmaginiMacchina.objects.filter(car_id = i.id)[0])
-
 
     zipped_mezzi = zip(imm_ord, info_mezzo)
 
@@ -268,8 +267,6 @@ def favorite_objects(request):
     imm_query = ImmaginiMacchina.objects.filter(car_id__in=mezz_id_sel)
     zipped_mezzi = zip(imm_query, info_mezzi)
 
-
-
     acc_id_sel = []
     for i in fav_acc:
         acc_id_sel.append(i.id)
@@ -285,13 +282,29 @@ def favorite_objects(request):
     return render(request, 'favList.html', context)
 
 @login_required
-def raccomandati(request):
-    user = request.user
+def add_to_cart(request, object_type, object_id):
+    user_cart, created = Carrello.objects.get_or_create(user=request.user)
+    succ=user_cart.add_to_cart(object_type, object_id)
+    if(succ):
+        return JsonResponse({"message": "Prodotto aggiunto al carrello!"})
+    return JsonResponse({"message": "Errore nell'aggiunta al carrello!"})
 
-    recommended_mezzi = recommend_mezzi(user)
+@login_required
+def remove_from_cart(request, object_type=None, object_id=None):
+    user_cart, created = Carrello.objects.get_or_create(user=request.user)
+    succ=user_cart.remove_from_cart(object_type, object_id)
+    if(succ):
+        return JsonResponse({"message": "Prodotto rimosso dal carrello!"})
+    return JsonResponse({"message": "Errore nella rimozione dal carrello!"})
+
+@login_required
+def view_cart(request):
+    try:
+        cart = Carrello.objects.get(user=request.user)
+    except Carrello.DoesNotExist:
+        cart = None
 
     context = {
-        'recommended_mezzi': recommended_mezzi,
+        'cart': cart,
     }
-
-    return render(request, 'recc.html', context)
+    return render(request, 'cart.html', context)

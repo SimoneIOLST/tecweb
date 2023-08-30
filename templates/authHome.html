@@ -127,8 +127,8 @@
                 <i class="fa fa-caret-down"></i>
                 </button>
                 <div class="dropdown-content">
-                <a href="{% url 'favorite_objects' %}">I tuoi Preferiti</a>
-                <a href="#">Il tuo carrello</a>
+                <a href="{% url 'favoriti' %}">I tuoi Preferiti</a>
+                <a href="{% url 'carrello' %}">Il tuo carrello</a>
                 <a href="{% url 'logout' %}">Logout</a>
                 </div>
             </div> 
@@ -223,6 +223,8 @@
                             <div id="risultati_filtri" style="padding: 10px; height: 100%; display: flex; flex-wrap: wrap">
                                 {% for i, c in zipped_mezzi %}
                                 <div class="container">
+                                    <a style="padding: 0px; height: 7%; width: 47%; text-decoration: none !important;" href="#" class="add-to-cart" data-object-type="mezzo" data-object-id="{{ c.id }}">Aggiungi al carrello</a>
+                                    <a style="padding: 0px; height: 7%; width: 47%; text-decoration: none !important;" href="#" class="remove-from-cart" data-object-type="mezzo" data-object-id="{{ c.id }}">Rimuovi dal carrello</a>
                                     <a style="padding: 0px; height: 7%; width: 47%; text-decoration: none !important;" href="#" class="add-to-favorites" data-object-type="mezzo" data-object-id="{{ c.id }}">Aggiungi ai preferiti</a>
                                     <a style="padding: 0px; height: 7%; width: 47%; text-decoration: none !important;" href="#" class="remove-from-favorites" data-object-type="mezzo" data-object-id="{{ c.id }}">Rimuovi dai preferiti</a>
                                     
@@ -232,7 +234,7 @@
                                         <div class="carsnippet">
                                             <img src="{{ i.fronte.url }}" width="280" height="200" align= "left"/>
                                             <div id="descrizione" align= "right" style="text-align: left;">
-                                                <p style="font-size:32px; color:red; font-weight: bolder;margin-top: 0px; margin-bottom: 15px; text-decoration: none;">
+                                                <p style="font-size:30px; color:red; font-weight: bolder;margin-top: 0px; margin-bottom: 15px; text-decoration: none;">
                                                     {{ c.marca }} {{ c.modello }}
                                                 </p>
                                                 <p style="font-size:22px; color: green; font-weight: bolder; margin-top: 0px; margin-bottom: 15px">
@@ -307,6 +309,8 @@
                             <div id="risultati_filtri_acc" style="padding: 10px; width: 100%; height: 100%; display: flex; flex-wrap: wrap">
                                 {% for i, acc in zipped_acc %}
                                 <div class="container">
+                                    <a style="padding: 0px; height: 7%; width: 47%; text-decoration: none !important;" href="#" class="add-to-cart" data-object-type="accessorio" data-object-id="{{ acc.id }}">Aggiungi al carrello</a>
+                                    <a style="padding: 0px; height: 7%; width: 47%; text-decoration: none !important;" href="#" class="remove-from-cart" data-object-type="accessorio" data-object-id="{{ acc.id }}">Rimuovi dal carrello</a>
                                     <a style="padding: 0px; height: 7%; width: 47%; text-decoration: none !important;" href="#" class="add-to-favorites" data-object-type="accessorio" data-object-id="{{ acc.id }}">Aggiungi ai preferiti</a>
                                     <a style="padding: 0px; height: 7%; width: 47%; text-decoration: none !important;" href="#" class="remove-from-favorites" data-object-type="accessorio" data-object-id="{{ acc.id }}">Rimuovi dai preferiti</a>
                                     <a class="prova" href="{% url 'gestione:acc-detail' acc.id %}">
@@ -349,13 +353,12 @@
                         alert(response.message);
                     },
                     error: function() {
-                        alert("Error adding to favorites.");
+                        alert("C'è stato un errore mentre aggiungevi ai preferiti, riprova.");
                     }
                 });
             });
         });
-    </script>
-    <script>
+
         $(document).ready(function() {
             $(".remove-from-favorites").click(function(e) {
                 e.preventDefault();
@@ -369,7 +372,45 @@
                         // Optionally, you can refresh the page or update the UI to reflect the change
                     },
                     error: function() {
-                        alert("Error removing from favorites.");
+                        alert("C'è stato un errore mentre rimuovevi dai preferiti, riprova.");
+                    }
+                });
+            });
+        });
+
+        $(document).ready(function() {
+            $(".add-to-cart").click(function(e) {
+                e.preventDefault();
+                var object_type = $(this).data("object-type");
+                var object_id = $(this).data("object-id");
+                $.ajax({
+                    url: `/add_to_cart/${object_type}/${object_id}/`,
+                    type: "GET",
+                    success: function(response) {
+                        alert(response.message);
+                        // Optionally, you can refresh the page or update the UI to reflect the change
+                    },
+                    error: function() {
+                        alert("C'è stato un errore mentre aggiungevi al carrello, riprova.");
+                    }
+                });
+            });
+        });
+
+        $(document).ready(function() {
+            $(".remove-from-cart").click(function(e) {
+                e.preventDefault();
+                var object_type = $(this).data("object-type");
+                var object_id = $(this).data("object-id");
+                $.ajax({
+                    url: `/remove_from_cart/${object_type}/${object_id}/`,
+                    type: "GET",
+                    success: function(response) {
+                        alert(response.message);
+                        // Optionally, you can refresh the page or update the UI to reflect the change
+                    },
+                    error: function() {
+                        alert("C'è stato un errore mentre rimuovevi dal carrello, riprova.");
                     }
                 });
             });

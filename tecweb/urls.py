@@ -33,7 +33,10 @@ urlpatterns = [
     path('authHome/', authHome_page, name="authHome_page"),
     path('add_to_favorites/<str:object_type>/<int:object_id>/', add_to_favorites, name='add_to_favorites'),
     path('remove_from_favorites/<str:object_type>/<int:object_id>/', remove_from_favorites, name='remove_from_favorites'),
-    path('favorite_objects/', favorite_objects, name='favorite_objects'),
+    path('favoriti/', favorite_objects, name='favoriti'),
+    path('add_to_cart/<str:object_type>/<int:object_id>/', add_to_cart, name='add_to_cart'),
+    path('remove_from_cart/<str:object_type>/<int:object_id>/', remove_from_cart, name='remove_from_cart'),
+    path('carrello/', view_cart, name='carrello'),
 ]+ static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
 
 #erase_db()
