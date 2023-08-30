@@ -178,8 +178,9 @@ def get_filtered_mezzi(request):
 
     if(len(queryset) == 0):
         return JsonResponse({'result_html': ''})
+    context={'queryset': zipped_mezzi}
 
-    result_html = render_to_string('filteredMezzi.html', {'queryset': zipped_mezzi})
+    result_html = render_to_string('filteredMezzi.html', context)
     return JsonResponse({'result_html': result_html})
 
 def get_filtered_acc(request):
