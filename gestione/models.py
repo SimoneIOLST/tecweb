@@ -135,3 +135,15 @@ class Carrello(models.Model):
     
     class Meta:
         verbose_name_plural = "Carrelli"
+
+class Spedizione(models.Model):
+    user = models.ForeignKey(User, on_delete=models.CASCADE)
+    via = models.TextField()
+    citta = models.CharField(max_length=50)
+    CAP = models.CharField(max_length=20)
+    stato = models.CharField(max_length=50)
+    is_appuntamento = models.BooleanField()
+    dataora = models.DateTimeField()
+
+    class Meta:
+        verbose_name_plural = "Spedizioni"

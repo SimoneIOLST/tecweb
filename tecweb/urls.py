@@ -37,6 +37,8 @@ urlpatterns = [
     path('add_to_cart/<str:object_type>/<int:object_id>/', add_to_cart, name='add_to_cart'),
     path('remove_from_cart/<str:object_type>/<int:object_id>/', remove_from_cart, name='remove_from_cart'),
     path('carrello/', view_cart, name='carrello'),
+    path('spedizione/', login_required(SpedCreateView.as_view()) , name='spedizione'),
+
 ]+ static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
 
 #erase_db()

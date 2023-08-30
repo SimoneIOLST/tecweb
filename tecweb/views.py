@@ -11,6 +11,7 @@ from django.views import View
 from django.urls import reverse, reverse_lazy
 from django.contrib.auth.decorators import login_required
 from .rec_sys import recommend_mezzi
+from django.views.generic.edit import CreateView
 
 def get_mezzi():
     imm_mezzi = ImmaginiMacchina.objects.all()
@@ -308,3 +309,29 @@ def view_cart(request):
         'cart': cart,
     }
     return render(request, 'cart.html', context)
+
+def mezzo_in_carr(user):
+    try:
+        carrello = Carrello.objects.get(user=user)
+        return carrello.items.filter(mezzo__isnull=False).exists()
+    except Carrello.DoesNotExist:
+        return False
+
+class SpedCreateView(CreateView):
+    model = Spedizione
+    template_name = "spedizione.html"
+    fields = "__all__"
+        
+    def form_valid(self, form):
+        response = super().form_valid(form)
+        return redirect('authHome_page')
+
+    def get_success_url(self):
+        return reverse('authHome_page')
+    
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        context['user_id'] = self.request.user.id
+        print(context["user_id"])
+        context['poss_app'] = mezzo_in_carr(self.request.user.id)
+        return context

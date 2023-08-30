@@ -1,0 +1,33 @@
+<html>
+    <head>
+        <title>
+            Spedizione del tuo carrello!
+        </title>
+    </head>
+    <body>
+        <h2>Crea una nuova spedizione per il tuo carrello!</h2>
+        <form method="post">
+            {% csrf_token %}
+            <input type="hidden" name="user" value={{ user_id }}>
+            Via: {{ form.via }}<br>
+            Città: {{ form.citta }}<br>
+            CAP: {{ form.CAP }}<br>
+            Stato: {{ form.stato }}<br>
+            {% if poss_app %}
+                Vuoi un appuntamento? {{ form.is_appuntamento }}<br>
+                <input type="datetime-local" id="id_dataora" name="dataora"><br>
+            {% else %}
+                Gli oggetti che hai selezionato non ti permettono di prenotare un appuntamento
+                <br>
+            {% endif %}
+            <button type="submit">Create Spedizione</button>
+        </form>
+    </body>
+    <script>
+        var dataoraInput = document.getElementById('id_dataora');
+    
+        var now = new Date();
+        var formattedNow = now.toISOString().slice(0, 16); 
+        dataoraInput.min = formattedNow;
+    </script>
+</html>

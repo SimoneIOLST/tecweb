@@ -63,10 +63,11 @@
             </h2>
 
         {% else %}
-            <p>Your cart is empty.</p>
+            <h1>Non ci sono oggetti qua.</h1>
         {% endif %}
         
-        <a href="{% url 'authHome_page' %}">Back to Home</a>
+        <a href="{% url 'authHome_page' %}">Torna alla Home</a><br/>
+        <a href="{% url 'spedizione' %}"> Vai al checkout</a>
     </body>
     <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
     <script>
