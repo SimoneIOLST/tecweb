@@ -1,0 +1,21 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Le tue spedizioni</title>
+</head>
+<body>
+    <h1>Le tue spedizioni</h1>
+    <ul>
+        {% for spedizione in user_spedizioni %}
+            <li>
+                Via: {{ spedizione.via }}<br>
+                Città: {{ spedizione.citta }}<br>
+                CAP: {{ spedizione.CAP }}<br>
+                Stato: {{ spedizione.Stato }}<br>
+                Appuntamento: {% if spedizione.is_appuntamento %}Sì{% else %}No{% endif %}<br>
+                Data e ora: {{ spedizione.dataora }}<br>
+            </li>
+        {% endfor %}
+    </ul>
+</body>
+</html>

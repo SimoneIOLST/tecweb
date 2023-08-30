@@ -324,6 +324,8 @@ class SpedCreateView(CreateView):
         
     def form_valid(self, form):
         response = super().form_valid(form)
+        carrello = Carrello.objects.get(user=self.request.user)
+        carrello.clear_cart()
         return redirect('authHome_page')
 
     def get_success_url(self):
@@ -332,6 +334,13 @@ class SpedCreateView(CreateView):
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
         context['user_id'] = self.request.user.id
-        print(context["user_id"])
         context['poss_app'] = mezzo_in_carr(self.request.user.id)
+        carrello = Carrello.objects.get(user=self.request.user)
+        context['costo'] = carrello.get_costo_tot()
         return context
+    
+@login_required    
+def view_spedizioni(request):
+    user_spedizioni = Spedizione.objects.filter(user=request.user)
+    context = {'user_spedizioni': user_spedizioni}
+    return render(request, 'spedizioneList.html', context)

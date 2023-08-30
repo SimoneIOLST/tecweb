@@ -20,10 +20,22 @@
                 Gli oggetti che hai selezionato non ti permettono di prenotare un appuntamento
                 <br>
             {% endif %}
+            <br>
             <button type="submit">Create Spedizione</button>
         </form>
+        <h3> Costo Totale: {{ costo }}</h3><br>
+        <a href="{% url 'carrello' %}">Guarda il tuo carrello</a>
     </body>
     <script>
+        var appuntamentoCheckbox = document.querySelector('[name="is_appuntamento"]');
+        appuntamentoCheckbox.addEventListener('change', function() {
+            if (appuntamentoCheckbox.checked) {
+                dataoraInput.removeAttribute('disabled');
+            } else {
+                dataoraInput.setAttribute('disabled', 'disabled');
+                dataoraInput.setValue('');
+            }
+        });
         var dataoraInput = document.getElementById('id_dataora');
     
         var now = new Date();

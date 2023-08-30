@@ -133,6 +133,9 @@ class Carrello(models.Model):
                 costo_tot += item.accessorio.prezzo
         return costo_tot
     
+    def clear_cart(self):
+        self.items.clear()
+    
     class Meta:
         verbose_name_plural = "Carrelli"
 
@@ -143,7 +146,8 @@ class Spedizione(models.Model):
     CAP = models.CharField(max_length=20)
     stato = models.CharField(max_length=50)
     is_appuntamento = models.BooleanField()
-    dataora = models.DateTimeField()
+    dataora = models.DateTimeField(null=True, blank=True)
+    successful = models.BooleanField(default=False)
 
     class Meta:
         verbose_name_plural = "Spedizioni"

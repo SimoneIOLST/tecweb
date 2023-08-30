@@ -38,6 +38,7 @@ urlpatterns = [
     path('remove_from_cart/<str:object_type>/<int:object_id>/', remove_from_cart, name='remove_from_cart'),
     path('carrello/', view_cart, name='carrello'),
     path('spedizione/', login_required(SpedCreateView.as_view()) , name='spedizione'),
+    path('spedizionilist/', view_spedizioni, name='spedizioni_list'),
 
 ]+ static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
 
